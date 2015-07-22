@@ -14,6 +14,8 @@ namespace SlickProcess
 
 		public string Instruction { get; set; }
 
+		public string PicturePath { get; set; }
+
 		public System.Windows.Media.Imaging.BitmapImage Picture { get; set; }
 
 		public StepMethod StepMethod { get; set; }
@@ -26,21 +28,21 @@ namespace SlickProcess
 
 		public Step(
 			string instruction,
-			BitmapImage picture)
+			string picturePath)
 		{
 			Instruction = instruction;
-			Picture = picture;
+			PicturePath = picturePath;
 			StepMethod = delegate() { return true; };
 			Result = true;
 		}
 
 		public Step(
 			string instruction,
-			BitmapImage picture,
+			string picturePath,
 			StepMethod stepMethod)
 		{
 			Instruction = instruction;
-			Picture = picture;
+			PicturePath = picturePath;
 			StepMethod = stepMethod;
 			Result = false;
 		}

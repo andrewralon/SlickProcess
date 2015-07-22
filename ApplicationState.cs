@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace SlickProcess
 {
@@ -18,6 +21,8 @@ namespace SlickProcess
 
 		private string instruction;
 
+		private string picturePath;
+		
 		private string stepNumber;
 
 		private string backText;
@@ -44,9 +49,20 @@ namespace SlickProcess
 			}
 		}
 
+		public string PicturePath
+		{
+			get { return picturePath; }
+			set
+			{
+				picturePath = value;
+				NotifyPropertyChanged("PicturePath");
+				NotifyPropertyChanged("Picture"); // Update the picture too!
+			}
+		}
+
 		public ImageSource Picture
 		{
-			get { return picture; }
+			get { return Convert(picturePath); }
 			set
 			{
 				picture = value;
@@ -132,6 +148,21 @@ namespace SlickProcess
 			{
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+
+		private static BitmapImage Convert(string bitmapPath)
+		{
+			Bitmap bitmap = new Bitmap(bitmapPath);
+			MemoryStream ms = new MemoryStream();
+			bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+
+			BitmapImage image = new BitmapImage();
+			image.BeginInit();
+			ms.Seek(0, SeekOrigin.Begin);
+			image.StreamSource = ms;
+			image.EndInit();
+
+			return image;
 		}
 
 		#endregion Private Methods

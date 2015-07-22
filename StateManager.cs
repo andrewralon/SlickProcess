@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace SlickProcess
 {
@@ -12,6 +16,10 @@ namespace SlickProcess
 		#region Fields
 
 		private static StateManager instance = new StateManager();
+
+		private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+		private string picPath = "\\..\\..\\Resources\\";
+		private string fullPath;
 
 		#endregion Fields
 
@@ -24,7 +32,7 @@ namespace SlickProcess
 
 		public ApplicationState State { get; set; }
 
-		private Step[] Steps { get; set; }
+		private List<Step> Steps { get; set; }
 
 		private int CurrentStep { get; set; }
 
@@ -34,78 +42,45 @@ namespace SlickProcess
 
 		private StateManager()
 		{
-			int index = 1;
-			Steps = new Step[]
+			// Get list of pictures in Resources folder
+			fullPath = Path.GetFullPath(path + picPath);
+			string[] pics = Directory.GetFiles(fullPath, "*.jpg");
+
+			// Create an XML file from the available pictures
+			XmlWriterSettings settings = new XmlWriterSettings();
+			settings.OmitXmlDeclaration = true;
+			settings.Indent = true;
+			settings.NewLineOnAttributes = true;
+
+			using (XmlWriter writer = XmlWriter.Create("steps.xml", settings))
 			{
-				new Step( // 1
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._01),
-					StepOne), 
-				new Step( // 2
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._02),
-					StepTwo),
-				new Step( // 3
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._03),
-					StepThree),
-				new Step( // 4
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._04),
-					StepFour), 
-				new Step( // 5
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._05),
-					StepFive),
-				new Step( // 6
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._06), 
-					StepSix),
-				new Step( // 7
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._07), 
-					StepSeven),
-				new Step( // 8
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._08), 
-					StepEight),
-				new Step( // 9
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._09), 
-					StepNine),
-				new Step( // 10
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._10), 
-					StepTen),
-				new Step( // 11
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._11),
-					StepEleven),
-				new Step( // 12
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._12)),
-				new Step( // 13
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._13)),
-				new Step( // 14
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._14), 
-					StepFourteen),
-				new Step( // 15
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._15)),
-				new Step( // 16
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._16), 
-					StepSixteen),
-				new Step( // 17
-					"Step " + (index++).ToString(), 
-					Convert(Properties.Resources._17)),
-				new Step( // 18
-					"Complete! Step " + (index++).ToString(), 
-					Convert(Properties.Resources._18),
-					StepEighteen)
-			};
+				writer.WriteStartDocument();
+				writer.WriteStartElement("SlickProcess");
+
+				for (int i = 0; i < pics.Length; i++)
+				{
+					writer.WriteStartElement("Step");
+
+					writer.WriteElementString("Instruction", "Instruction for step " + (i + 1).ToString());
+					writer.WriteElementString("PicturePath", pics[i].ToString());
+					writer.WriteElementString("Method", true.ToString());
+
+					writer.WriteEndElement();
+				}
+
+				writer.WriteEndElement();
+				writer.WriteEndDocument();
+			}
+
+			// Load the XML from the file
+			XDocument xml = XDocument.Load("steps.xml");
+
+			// Query the data and get the list of steps
+			Steps = (from c in xml.Root.Descendants("Step")
+					 select new Step(
+						 c.Element("Instruction").Value,
+						 c.Element("PicturePath").Value
+					)).ToList();
 
 			State = new ApplicationState();
 			State.BackText = "Back";
@@ -140,13 +115,13 @@ namespace SlickProcess
 			CurrentStep = nextStep;
 
 			State.BackEnabled = CurrentStep <= 0 ? false : true;
-			State.NextEnabled = CurrentStep >= Steps.Length - 1 ? false : true;
-			State.CancelText = CurrentStep >= Steps.Length - 1 ? "Finish" : "Cancel";
+			State.NextEnabled = CurrentStep >= Steps.Count - 1 ? false : true;
+			State.CancelText = CurrentStep >= Steps.Count - 1 ? "Finish" : "Cancel";
 
 			Step step = Steps[CurrentStep];
 			State.Instruction = step.Instruction;
-			State.Picture = step.Picture;
-			State.StepNumber = "Step " + (CurrentStep + 1) + " of " + Steps.Length;
+			State.PicturePath = step.PicturePath;
+			State.StepNumber = "Step " + (CurrentStep + 1) + " of " + Steps.Count;
 		}
 
 		private bool ExecuteStep()
@@ -234,20 +209,6 @@ namespace SlickProcess
 		private bool StepEighteen()
 		{
 			return true;
-		}
-
-		private static BitmapImage Convert(System.Drawing.Bitmap value)
-		{
-			MemoryStream ms = new MemoryStream();
-			value.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-
-			BitmapImage image = new BitmapImage();
-			image.BeginInit();
-			ms.Seek(0, SeekOrigin.Begin);
-			image.StreamSource = ms;
-			image.EndInit();
-
-			return image;
 		}
 
 		#endregion Private Methods
