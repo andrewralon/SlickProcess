@@ -17,6 +17,7 @@ namespace SlickProcess
 
 		private static StateManager instance = new StateManager();
 
+		// Debug / proof of concept / testing variables
 		private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 		private string picPath = "\\..\\..\\Resources\\";
 		private string fullPath;
@@ -72,20 +73,23 @@ namespace SlickProcess
 				writer.WriteEndDocument();
 			}
 
-			// Load the XML from the file
+			// Load the XML file
 			XDocument xml = XDocument.Load("steps.xml");
 
-			// Query the data and get the list of steps
+			// Create the list of steps from the parsed data
+			//  Not sure what to do with Method yet....
 			Steps = (from c in xml.Root.Descendants("Step")
 					 select new Step(
 						 c.Element("Instruction").Value,
 						 c.Element("PicturePath").Value
 					)).ToList();
 
+			// Set the defaults on the GUI
 			State = new ApplicationState();
 			State.BackText = "Back";
 			State.NextText = "Next";
 
+			// Transition to the first state
 			Transition(0);
 		}
 
@@ -95,9 +99,11 @@ namespace SlickProcess
 
 		internal void Next()
 		{
+			// Run the step's method and store the result
 			Steps[CurrentStep].Result = ExecuteStep();
-			int nextStep = Steps[CurrentStep].Result ? CurrentStep + 1 : FallBackStep();
 
+			// What's the next step? If it passed, add 1. If it failed, go to the FallBackStep.
+			int nextStep = Steps[CurrentStep].Result ? CurrentStep + 1 : FallBackStep();
 			Transition(nextStep);
 		}
 
@@ -114,101 +120,34 @@ namespace SlickProcess
 		{
 			CurrentStep = nextStep;
 
+			// Update the buttons for first and last steps
 			State.BackEnabled = CurrentStep <= 0 ? false : true;
 			State.NextEnabled = CurrentStep >= Steps.Count - 1 ? false : true;
 			State.CancelText = CurrentStep >= Steps.Count - 1 ? "Finish" : "Cancel";
 
-			Step step = Steps[CurrentStep];
-			State.Instruction = step.Instruction;
-			State.PicturePath = step.PicturePath;
-			State.StepNumber = "Step " + (CurrentStep + 1) + " of " + Steps.Count;
+			// Update the GUI with a new instruction, picture, and number
+			State.Instruction = Steps[CurrentStep].Instruction;
+			State.PicturePath = Steps[CurrentStep].PicturePath;
+			State.Number = "Step " + (CurrentStep + 1) + " of " + Steps.Count;
 		}
 
 		private bool ExecuteStep()
 		{
-			return Steps[CurrentStep].StepMethod();
+			return Steps[CurrentStep].Method();
 		}
 
 		private int FallBackStep()
 		{
 			switch (CurrentStep)
 			{
+				// Example: Go back to step 5 when either step 5 or 6 fails
 				//case 5:
 				//case 6:
 				//	return 5;
+				// Otherwise, just do the current step over again if it fails
 				default:
 					return CurrentStep;
 			}
-		}
-
-		private bool StepOne()
-		{
-			return true;
-		}
-
-		private bool StepTwo()
-		{
-			return true;
-		}
-
-		private bool StepThree()
-		{
-			return true;
-		}
-
-		private bool StepFour()
-		{
-			return true;
-		}
-
-		private bool StepFive()
-		{
-			return true;
-		}
-
-		private bool StepSix()
-		{
-			return true;
-		}
-
-		private bool StepSeven()
-		{
-			return true;
-		}
-
-		private bool StepEight()
-		{
-			return true;
-		}
-
-		private bool StepNine()
-		{
-			return true;
-		}
-
-		private bool StepTen()
-		{
-			return true;
-		}
-
-		private bool StepEleven()
-		{
-			return true;
-		}
-
-		private bool StepFourteen()
-		{
-			return true;
-		}
-
-		private bool StepSixteen()
-		{
-			return true;
-		}
-
-		private bool StepEighteen()
-		{
-			return true;
 		}
 
 		#endregion Private Methods

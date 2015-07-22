@@ -15,11 +15,11 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="txtInstruction" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding Path=Instruction, FallbackValue='Put the thing in the thing.'}" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow"/>
-        
-        <Image x:Name="picPicture" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Source="{Binding Path=Picture}" />
+        <TextBlock x:Name="txtInstruction" Text="{Binding Path=Instruction, FallbackValue='Put the thing in the thing.'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow"/>
 
-        <TextBlock Text="{Binding Path=StepNumber, FallbackValue='Step X of Y'}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="16"/>
+        <Image x:Name="picPicture" Source="{Binding Path=Picture}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+        <TextBlock Text="{Binding Path=Number, FallbackValue='Step X of Y'}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="16"/>
 
         <Button x:Name="btnBack" Content="{Binding Path=BackText, FallbackValue='Back'}" IsEnabled="{Binding Path=BackEnabled, FallbackValue=False}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnBack_Click" FontSize="16"/>
         <Button x:Name="btnNext" Content="{Binding Path=NextText, FallbackValue='Next'}" IsEnabled="{Binding Path=NextEnabled, FallbackValue=True}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnNext_Click" FontSize="16"/>

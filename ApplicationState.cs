@@ -17,13 +17,13 @@ namespace SlickProcess
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		private ImageSource picture;
-
 		private string instruction;
+
+		private ImageSource picture;
 
 		private string picturePath;
 		
-		private string stepNumber;
+		private string number;
 
 		private string backText;
 
@@ -70,13 +70,13 @@ namespace SlickProcess
 			}
 		}
 
-		public string StepNumber
+		public string Number
 		{
-			get { return stepNumber; }
+			get { return number; }
 			set
 			{
-				stepNumber = value;
-				NotifyPropertyChanged("StepNumber");
+				number = value;
+				NotifyPropertyChanged("Number");
 			}
 		}
 
@@ -152,8 +152,8 @@ namespace SlickProcess
 
 		private static BitmapImage Convert(string bitmapPath)
 		{
-			Bitmap bitmap = new Bitmap(bitmapPath);
 			MemoryStream ms = new MemoryStream();
+			Bitmap bitmap = new Bitmap(bitmapPath);
 			bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
 
 			BitmapImage image = new BitmapImage();
