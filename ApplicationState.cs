@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -22,7 +17,7 @@ namespace SlickProcess
 		private ImageSource picture;
 
 		private string picturePath;
-		
+
 		private string number;
 
 		private string backText;
@@ -55,14 +50,14 @@ namespace SlickProcess
 			set
 			{
 				picturePath = value;
-				NotifyPropertyChanged("PicturePath");
-				NotifyPropertyChanged("Picture"); // Update the picture too!
+				Picture = Convert(picturePath);
+				//NotifyPropertyChanged("PicturePath");
 			}
 		}
 
 		public ImageSource Picture
 		{
-			get { return Convert(picturePath); }
+			get { return picture; }
 			set
 			{
 				picture = value;

@@ -24,9 +24,10 @@ namespace SlickProcess
 		public MainWindow()
 		{
 			InitializeComponent();
-			this.Title = Application.ResourceAssembly.GetName().Name + 
-				" " + Application.ResourceAssembly.GetName().Version + 
+			this.Title += " " + Application.ResourceAssembly.GetName().Version + 
 				" © " + DateTime.UtcNow.Year + " TeamRalon";
+
+			string[] args = Environment.GetCommandLineArgs();
 
 			DataContext = StateManager
 				.Instance

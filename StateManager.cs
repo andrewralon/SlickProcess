@@ -120,15 +120,15 @@ namespace SlickProcess
 		{
 			CurrentStep = nextStep;
 
+			// Update the GUI with a new instruction, picture, and number
+			State.Instruction = Steps[CurrentStep].Instruction;
+			State.Number = "Step " + (CurrentStep + 1) + " of " + Steps.Count;
+			State.PicturePath = Steps[CurrentStep].PicturePath;
+
 			// Update the buttons for first and last steps
 			State.BackEnabled = CurrentStep <= 0 ? false : true;
 			State.NextEnabled = CurrentStep >= Steps.Count - 1 ? false : true;
 			State.CancelText = CurrentStep >= Steps.Count - 1 ? "Finish" : "Cancel";
-
-			// Update the GUI with a new instruction, picture, and number
-			State.Instruction = Steps[CurrentStep].Instruction;
-			State.PicturePath = Steps[CurrentStep].PicturePath;
-			State.Number = "Step " + (CurrentStep + 1) + " of " + Steps.Count;
 		}
 
 		private bool ExecuteStep()
