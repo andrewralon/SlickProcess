@@ -18,6 +18,8 @@ namespace SlickProcess
 
 		public BitmapImage Picture { get; set; }
 
+		public string Command { get; set; }
+
 		public StepMethod Method { get; set; }
 
 		public bool Result { get; set; }
@@ -25,6 +27,17 @@ namespace SlickProcess
 		#endregion Properties
 
 		#region Constructors
+
+		public Step(
+			string instruction,
+			string picturePath,
+			string command)
+		{
+			Instruction = instruction;
+			PicturePath = picturePath;
+			Command = command;
+			Result = true;
+		}
 
 		public Step(
 			string instruction,

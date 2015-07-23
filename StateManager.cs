@@ -19,6 +19,7 @@ namespace SlickProcess
 
 		// Debug / proof of concept / testing variables
 		private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+		private string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\pics\\";
 		private string picPath = "\\..\\..\\Resources\\";
 		private string fullPath;
 
@@ -64,13 +65,19 @@ namespace SlickProcess
 
 					writer.WriteElementString("Instruction", "Instruction for step " + (i + 1).ToString());
 					writer.WriteElementString("PicturePath", pics[i].ToString());
-					writer.WriteElementString("Method", true.ToString());
+					writer.WriteElementString("Command", "copy " + pics[i].ToString() + " " + desktop);
 
 					writer.WriteEndElement();
 				}
 
 				writer.WriteEndElement();
 				writer.WriteEndDocument();
+			}
+
+			// DEBUG - Delete the existing files in the desktop folder
+			foreach (string filePath in Directory.GetFiles(desktop))
+			{
+				File.Delete(filePath);
 			}
 
 			// Load the XML file
