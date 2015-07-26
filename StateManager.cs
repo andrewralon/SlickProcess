@@ -134,7 +134,6 @@ namespace SlickProcess
 
 			// Set the defaults on the GUI
 			State = new ApplicationState();
-			State.WindowTitle = filename;
 			State.BackText = "Back";
 			State.NextText = "Next";
 
