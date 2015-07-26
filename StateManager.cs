@@ -66,7 +66,7 @@ namespace SlickProcess
 
 					writer.WriteElementString("Instruction", "Instruction for step " + (i + 1).ToString());
 					writer.WriteElementString("PicturePath", pics[i].ToString());
-					writer.WriteElementString("Command", "copy " + pics[i].ToString() + " " + desktop);
+					writer.WriteElementString("Command", "copy \"" + pics[i].ToString() + "\" \"" + desktop + "\"");
 
 					writer.WriteEndElement();
 				}
@@ -162,20 +162,24 @@ namespace SlickProcess
 
 		private bool RunCommand(string command)
 		{
+			bool result = false;
+
 			Process process = new Process();
 			ProcessStartInfo startInfo = new ProcessStartInfo();
 
+			// Redirect standard output so we can show the command's result in the console
+			startInfo.RedirectStandardOutput = true;
+			startInfo.RedirectStandardError = true;
+			startInfo.UseShellExecute = false;
 			startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 			startInfo.FileName = "cmd.exe";
 			startInfo.Arguments = "/C " + command;
 
 			// TODO - Debug only
-			Console.WriteLine("Command: " + command);
+			Console.WriteLine("Command:" + Environment.NewLine + "    " + command);
 
 			process.StartInfo = startInfo;
 			process.Start();
-
-			//process.StandardOutput ????
 
 			// Code adapted from MSDN: 
 			//  https://msdn.microsoft.com/en-us/library/system.diagnostics.process.exitcode(v=vs.110).aspx
@@ -185,18 +189,7 @@ namespace SlickProcess
 			{
 				if (!process.HasExited)
 				{
-					// Refresh the current process property values.
 					process.Refresh();
-
-					// TODO - Debug only
-					if (process.Responding)
-					{
-						Console.WriteLine("Status: Running");
-					}
-					else
-					{
-						Console.WriteLine("Status: Not Responding");
-					}
 				}
 			}
 			while (!process.WaitForExit(1000));
@@ -204,13 +197,30 @@ namespace SlickProcess
 			// TODO - Debug only
 			Console.WriteLine("Process exit code: " + process.ExitCode);
 
-			// Return false if there were any errors completing the command
-			if (process.ExitCode != 0)
+			string output = process.StandardOutput.ReadToEnd();
+			if (output != "")
 			{
-				return false;
+				Console.WriteLine("Output:" + Environment.NewLine + output);
 			}
 
-			return true;
+			string error = process.StandardError.ReadToEnd();
+			if (error != "")
+			{
+				Console.WriteLine("Error:" + Environment.NewLine + error);
+			}
+
+			// Return true if there were no errors completing the command
+			if (process.ExitCode == 0)
+			{
+				result = true;
+			}
+
+			if (process!= null)
+			{
+				process.Close();
+			}
+
+			return result;
 		}
 
 		#endregion Private Methods
