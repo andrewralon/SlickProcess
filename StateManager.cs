@@ -75,6 +75,11 @@ namespace SlickProcess
 				writer.WriteEndDocument();
 			}
 
+			if (!Directory.Exists(desktop))
+			{
+				Directory.CreateDirectory(desktop);
+			}
+
 			// DEBUG - Delete the existing files in the desktop folder
 			foreach (string filePath in Directory.GetFiles(desktop))
 			{
@@ -109,11 +114,31 @@ namespace SlickProcess
 		internal void Next()
 		{
 			// Run the step's method and store the result
-			Steps[CurrentStep].Result = ExecuteStep();
+			Steps[CurrentStep].Passed = ExecuteStep();
 
-			// What's the next step? If it passed, add 1. If it failed, go to the FallBackStep.
-			int nextStep = Steps[CurrentStep].Result ? CurrentStep + 1 : FallBackStep();
-			Transition(nextStep);
+			// What's the next step? If it passed, add 1. If it failed, display a message and go to the FallBackStep.
+			if (Steps[CurrentStep].Passed)
+			{
+				Transition(CurrentStep + 1);
+			}
+			else
+			{
+				int fallBackStep = FallBackStep() + 1; 
+
+				// Gather all useful information to tell the user why the step failed
+				string message = "The following command failed:" + Environment.NewLine + 
+					">" + Steps[CurrentStep].Command + Environment.NewLine + Environment.NewLine;
+
+				// Standard error and output, just like in the Windows console
+				message += Steps[CurrentStep].Error + Steps[CurrentStep].Output;
+
+				// Tell the user which step is next after failing
+				message += Environment.NewLine + "Please fix the problem before continuing on to Step #" + fallBackStep + "....";
+
+				MessageBox.Show(message, "Step #" + (CurrentStep + 1) + " Failed");
+
+				Transition(FallBackStep());
+			}
 		}
 
 		internal void Back()
@@ -176,15 +201,13 @@ namespace SlickProcess
 			startInfo.Arguments = "/C " + command;
 
 			// TODO - Debug only
-			Console.WriteLine("Command:" + Environment.NewLine + "    " + command);
+			Console.WriteLine("Command:" + Environment.NewLine + ">" + command);
 
 			process.StartInfo = startInfo;
 			process.Start();
 
-			// Code adapted from MSDN: 
-			//  https://msdn.microsoft.com/en-us/library/system.diagnostics.process.exitcode(v=vs.110).aspx
-
 			// Refresh the process every second and wait for it to finish
+			//  Code adapted from: https://msdn.microsoft.com/en-us/library/system.diagnostics.process.exitcode(v=vs.110).aspx
 			do
 			{
 				if (!process.HasExited)
@@ -197,16 +220,18 @@ namespace SlickProcess
 			// TODO - Debug only
 			Console.WriteLine("Process exit code: " + process.ExitCode);
 
-			string output = process.StandardOutput.ReadToEnd();
-			if (output != "")
-			{
-				Console.WriteLine("Output:" + Environment.NewLine + output);
-			}
-
 			string error = process.StandardError.ReadToEnd();
 			if (error != "")
 			{
+				Steps[CurrentStep].Error = error;
 				Console.WriteLine("Error:" + Environment.NewLine + error);
+			}
+
+			string output = process.StandardOutput.ReadToEnd();
+			if (output != "")
+			{
+				Steps[CurrentStep].Output = output;
+				Console.WriteLine("Output:" + Environment.NewLine + output);
 			}
 
 			// Return true if there were no errors completing the command
