@@ -22,6 +22,7 @@ namespace SlickProcess
 		private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 		private string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\pics\\";
 		private string picPath = "\\..\\..\\Resources\\";
+		private string xmlPath = "steps.xml";
 		private string fullPath;
 
 		#endregion Fields
@@ -35,6 +36,8 @@ namespace SlickProcess
 
 		public ApplicationState State { get; set; }
 
+		public string ProcessName { get; set; }
+
 		private List<Step> Steps { get; set; }
 
 		private int CurrentStep { get; set; }
@@ -44,6 +47,15 @@ namespace SlickProcess
 		#region Constructors
 
 		private StateManager()
+		{
+			ProcessName = "";
+		}
+
+		#endregion Constructors
+
+		#region Public Methods
+
+		internal void Demo()
 		{
 			// Get list of pictures in Resources folder
 			fullPath = Path.GetFullPath(path + picPath);
@@ -55,10 +67,11 @@ namespace SlickProcess
 			settings.Indent = true;
 			settings.NewLineOnAttributes = true;
 
-			using (XmlWriter writer = XmlWriter.Create("steps.xml", settings))
+			using (XmlWriter writer = XmlWriter.Create(xmlPath, settings))
 			{
 				writer.WriteStartDocument();
 				writer.WriteStartElement("SlickProcess");
+				writer.WriteElementString("Version", Application.ResourceAssembly.GetName().Version.ToString());
 
 				for (int i = 0; i < pics.Length; i++)
 				{
@@ -86,8 +99,29 @@ namespace SlickProcess
 				File.Delete(filePath);
 			}
 
+			Open(xmlPath);
+		}
+
+		internal void Open(string filePath)
+		{
+			string filename = Path.GetFileName(filePath);
+			if (ProcessName == "")
+			{
+				ProcessName = filePath;
+			}
+			else
+			{
+
+				MessageBoxResult result = 
+					MessageBox.Show("Would you like to open \"" + filename + "\"?", "Open a Process", MessageBoxButton.YesNo);
+				if (result != MessageBoxResult.Yes)
+				{
+					return;
+				}
+			}
+
 			// Load the XML file
-			XDocument xml = XDocument.Load("steps.xml");
+			XDocument xml = XDocument.Load(filePath);
 
 			// Create the list of steps from the parsed data
 			//  Not sure what to do with Method yet....
@@ -100,16 +134,13 @@ namespace SlickProcess
 
 			// Set the defaults on the GUI
 			State = new ApplicationState();
+			State.WindowTitle = filename;
 			State.BackText = "Back";
 			State.NextText = "Next";
 
 			// Transition to the first state
 			Transition(0);
 		}
-
-		#endregion Constructors
-
-		#region Public Methods
 
 		internal void Next()
 		{
@@ -123,17 +154,17 @@ namespace SlickProcess
 			}
 			else
 			{
-				int fallBackStep = FallBackStep() + 1; 
+				int fallBackStep = FallBackStep();
 
 				// Gather all useful information to tell the user why the step failed
-				string message = "The following command failed:" + Environment.NewLine + 
+				string message = "The following command failed:" + Environment.NewLine +
 					">" + Steps[CurrentStep].Command + Environment.NewLine + Environment.NewLine;
 
 				// Standard error and output, just like in the Windows console
 				message += Steps[CurrentStep].Error + Steps[CurrentStep].Output;
 
 				// Tell the user which step is next after failing
-				message += Environment.NewLine + "Please fix the problem before continuing on to Step #" + fallBackStep + "....";
+				message += Environment.NewLine + "Please fix the problem before continuing on to Step #" + (fallBackStep + 1) + "....";
 
 				MessageBox.Show(message, "Step #" + (CurrentStep + 1) + " Failed");
 
@@ -152,6 +183,12 @@ namespace SlickProcess
 
 		private void Transition(int nextStep)
 		{
+			if (nextStep < 0 || nextStep > Steps.Count)
+			{
+				MessageBox.Show("There is no step number " + nextStep + "!", "Error Loading Step");
+				return;
+			}
+
 			CurrentStep = nextStep;
 
 			// Update the GUI with a new instruction, picture, and number
@@ -201,13 +238,11 @@ namespace SlickProcess
 			startInfo.Arguments = "/C " + command;
 
 			// TODO - Debug only
-			Console.WriteLine("Command:" + Environment.NewLine + ">" + command);
+			Console.WriteLine(">" + command);
 
 			process.StartInfo = startInfo;
 			process.Start();
 
-			// Refresh the process every second and wait for it to finish
-			//  Code adapted from: https://msdn.microsoft.com/en-us/library/system.diagnostics.process.exitcode(v=vs.110).aspx
 			do
 			{
 				if (!process.HasExited)
@@ -215,24 +250,18 @@ namespace SlickProcess
 					process.Refresh();
 				}
 			}
-			while (!process.WaitForExit(1000));
+			while (!process.WaitForExit(500));
 
 			// TODO - Debug only
-			Console.WriteLine("Process exit code: " + process.ExitCode);
-
 			string error = process.StandardError.ReadToEnd();
-			if (error != "")
-			{
-				Steps[CurrentStep].Error = error;
-				Console.WriteLine("Error:" + Environment.NewLine + error);
-			}
+			Steps[CurrentStep].Error = error;
+			Console.Write(error);
 
 			string output = process.StandardOutput.ReadToEnd();
-			if (output != "")
-			{
-				Steps[CurrentStep].Output = output;
-				Console.WriteLine("Output:" + Environment.NewLine + output);
-			}
+			Steps[CurrentStep].Output = output;
+			Console.Write(output);
+
+			Console.WriteLine("Process exit code: " + process.ExitCode);
 
 			// Return true if there were no errors completing the command
 			if (process.ExitCode == 0)
@@ -240,7 +269,7 @@ namespace SlickProcess
 				result = true;
 			}
 
-			if (process!= null)
+			if (process != null)
 			{
 				process.Close();
 			}
