@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -88,7 +89,8 @@ namespace SlickProcess
 			Steps = (from c in xml.Root.Descendants("Step")
 					 select new Step(
 						 c.Element("Instruction").Value,
-						 c.Element("PicturePath").Value
+						 c.Element("PicturePath").Value,
+						 c.Element("Command").Value
 					)).ToList();
 
 			// Set the defaults on the GUI
@@ -140,7 +142,8 @@ namespace SlickProcess
 
 		private bool ExecuteStep()
 		{
-			return Steps[CurrentStep].Method();
+			return RunCommand(Steps[CurrentStep].Command);
+			//return Steps[CurrentStep].Method();
 		}
 
 		private int FallBackStep()
@@ -155,6 +158,59 @@ namespace SlickProcess
 				default:
 					return CurrentStep;
 			}
+		}
+
+		private bool RunCommand(string command)
+		{
+			Process process = new Process();
+			ProcessStartInfo startInfo = new ProcessStartInfo();
+
+			startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+			startInfo.FileName = "cmd.exe";
+			startInfo.Arguments = "/C " + command;
+
+			// TODO - Debug only
+			Console.WriteLine("Command: " + command);
+
+			process.StartInfo = startInfo;
+			process.Start();
+
+			//process.StandardOutput ????
+
+			// Code adapted from MSDN: 
+			//  https://msdn.microsoft.com/en-us/library/system.diagnostics.process.exitcode(v=vs.110).aspx
+
+			// Refresh the process every second and wait for it to finish
+			do
+			{
+				if (!process.HasExited)
+				{
+					// Refresh the current process property values.
+					process.Refresh();
+
+					// TODO - Debug only
+					if (process.Responding)
+					{
+						Console.WriteLine("Status: Running");
+					}
+					else
+					{
+						Console.WriteLine("Status: Not Responding");
+					}
+				}
+			}
+			while (!process.WaitForExit(1000));
+
+			// TODO - Debug only
+			Console.WriteLine("Process exit code: " + process.ExitCode);
+
+			// Return false if there were any errors completing the command
+			if (process.ExitCode != 0)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		#endregion Private Methods
