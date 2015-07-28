@@ -14,6 +14,12 @@ namespace SlickProcess
 
 		private string instruction;
 
+		private string instructionVisibility;
+
+		private string instructionEdit;
+
+		private string instructionEditVisibility;
+
 		private ImageSource picture;
 
 		private string picturePath;
@@ -40,7 +46,40 @@ namespace SlickProcess
 			set
 			{
 				instruction = value;
+				instructionEdit = value;
 				NotifyPropertyChanged("Instruction");
+			}
+		}
+
+		public string InstructionVisibility
+		{
+			get { return instructionVisibility; }
+			set
+			{
+				instructionVisibility = value;
+				NotifyPropertyChanged("InstructionVisibility");
+			}
+		}
+
+		public string InstructionEdit
+		{
+			get { return instructionEdit; }
+			set
+			{
+				instructionEdit = value;
+				instruction = value;
+				NotifyPropertyChanged("InstructionEdit");
+				NotifyPropertyChanged("Instruction");
+			}
+		}
+
+		public string InstructionEditVisibility
+		{
+			get { return instructionEditVisibility; }
+			set
+			{
+				instructionEditVisibility = value;
+				NotifyPropertyChanged("InstructionEditVisibility");
 			}
 		}
 

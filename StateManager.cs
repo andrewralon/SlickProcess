@@ -38,6 +38,8 @@ namespace SlickProcess
 
 		public string ProcessName { get; set; }
 
+		public string ProcessPath { get; set; }
+
 		private List<Step> Steps { get; set; }
 
 		private int CurrentStep { get; set; }
@@ -107,11 +109,11 @@ namespace SlickProcess
 			string filename = Path.GetFileName(filePath);
 			if (ProcessName == "")
 			{
-				ProcessName = filePath;
+				ProcessName = filename;
+				ProcessPath = filePath;
 			}
 			else
 			{
-
 				MessageBoxResult result = 
 					MessageBox.Show("Would you like to open \"" + filename + "\"?", "Open a Process", MessageBoxButton.YesNo);
 				if (result != MessageBoxResult.Yes)
@@ -139,6 +141,36 @@ namespace SlickProcess
 
 			// Transition to the first state
 			Transition(0);
+		}
+
+		internal void Save(string filePath)
+		{
+			// Create an XML file from the available pictures
+			XmlWriterSettings settings = new XmlWriterSettings();
+			settings.OmitXmlDeclaration = true;
+			settings.Indent = true;
+			settings.NewLineOnAttributes = true;
+
+			using (XmlWriter writer = XmlWriter.Create(filePath, settings))
+			{
+				writer.WriteStartDocument();
+				writer.WriteStartElement("SlickProcess");
+				writer.WriteElementString("Version", Application.ResourceAssembly.GetName().Version.ToString());
+
+				for (int i = 0; i < Steps.Count; i++)
+				{
+					writer.WriteStartElement("Step");
+
+					writer.WriteElementString("Instruction", Steps[i].Instruction);
+					writer.WriteElementString("PicturePath", Steps[i].PicturePath);
+					writer.WriteElementString("Command", Steps[i].Command);
+
+					writer.WriteEndElement();
+				}
+
+				writer.WriteEndElement();
+				writer.WriteEndDocument();
+			}
 		}
 
 		internal void Next()
@@ -174,6 +206,29 @@ namespace SlickProcess
 		internal void Back()
 		{
 			Transition(CurrentStep - 1);
+		}
+
+		internal void ToggleEditMode(bool isEditMode)
+		{
+			if (isEditMode)
+			{
+				State.InstructionEdit = State.Instruction;
+
+				State.InstructionEditVisibility = "Visible";
+				State.InstructionVisibility = "Hidden";
+			}
+			else
+			{
+				State.InstructionVisibility = "Visible";
+				State.InstructionEditVisibility = "Hidden";
+
+				// Update the list of steps
+				Steps[CurrentStep].Instruction = State.Instruction;
+				Steps[CurrentStep].PicturePath = State.PicturePath;
+
+				// Save changes immediately
+				Save(ProcessPath);
+			}
 		}
 
 		#endregion Public Methods

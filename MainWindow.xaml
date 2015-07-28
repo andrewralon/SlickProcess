@@ -15,14 +15,17 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock x:Name="txtInstruction" Text="{Binding Path=Instruction, FallbackValue='Put the thing in the thing.'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow"/>
+        <TextBlock x:Name="txtInstruction" Text="{Binding Instruction, FallbackValue='Put the thing in the thing.'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionVisibility, FallbackValue=Visible}"/>
+        <TextBox x:Name="txtInstructionEdit" Text="{Binding InstructionEdit, FallbackValue='THE EDIT TEXTBOX!'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionEditVisibility, FallbackValue=Hidden}"/>
 
-        <Image x:Name="picPicture" Source="{Binding Path=Picture}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Image x:Name="picPicture" Source="{Binding Picture}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Drop="picPicture_Drop"/>
 
-        <TextBlock Text="{Binding Path=Number, FallbackValue='Step X of Y'}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="16"/>
+        <TextBlock Text="{Binding Number, FallbackValue=Step X of Y}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="16"/>
 
-        <Button x:Name="btnBack" Content="{Binding Path=BackText, FallbackValue='Back'}" IsEnabled="{Binding Path=BackEnabled, FallbackValue=False}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnBack_Click" FontSize="16"/>
-        <Button x:Name="btnNext" Content="{Binding Path=NextText, FallbackValue='Next'}" IsEnabled="{Binding Path=NextEnabled, FallbackValue=True}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnNext_Click" FontSize="16"/>
-        <Button x:Name="btnCancel" Content="{Binding Path=CancelText, FallbackValue='Cancel'}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnCancel_Click" FontSize="16"/>
+        <Button x:Name="btnBack" Content="{Binding BackText, FallbackValue=Back}" IsEnabled="{Binding BackEnabled, FallbackValue=False}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnBack_Click" FontSize="16"/>
+        <Button x:Name="btnNext" Content="{Binding NextText, FallbackValue=Next}" IsEnabled="{Binding NextEnabled, FallbackValue=True}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnNext_Click" FontSize="16"/>
+        <Button x:Name="btnCancel" Content="{Binding CancelText, FallbackValue=Cancel}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnCancel_Click" FontSize="16"/>
+
+        <CheckBox x:Name="chkEdit" Content="{Binding EditCheckbox, FallbackValue=Edit}" HorizontalAlignment="Left" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Checked="chkEdit_Checked" Unchecked="chkEdit_Unchecked"/>
     </Grid>
 </Window>

@@ -72,6 +72,24 @@ namespace SlickProcess
 			this.Close();
 		}
 
+		private void chkEdit_Checked(object sender, RoutedEventArgs e)
+		{
+			StateManager.Instance.ToggleEditMode((bool)chkEdit.IsChecked);
+		}
+
+		private void chkEdit_Unchecked(object sender, RoutedEventArgs e)
+		{
+			StateManager.Instance.ToggleEditMode((bool)chkEdit.IsChecked);
+		}
+
+		private void picPicture_Drop(object sender, DragEventArgs e)
+		{
+			if ((bool)chkEdit.IsChecked)
+			{
+				// Handle the picture drop by adding it to the slide
+			}
+		}
+
 		private void Window_Drop(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
