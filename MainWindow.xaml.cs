@@ -81,6 +81,11 @@ namespace SlickProcess
 		{
 			StateManager.Instance.ToggleEditMode((bool)chkEdit.IsChecked);
 		}
+		
+		private void btnDelete_Click(object sender, RoutedEventArgs e)
+		{
+			StateManager.Instance.DeleteCurrentStep();
+		}
 
 		private void picPicture_Drop(object sender, DragEventArgs e)
 		{

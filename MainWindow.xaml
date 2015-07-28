@@ -27,5 +27,6 @@
         <Button x:Name="btnCancel" Content="{Binding CancelText, FallbackValue=Cancel}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnCancel_Click" FontSize="16"/>
 
         <CheckBox x:Name="chkEdit" Content="{Binding EditCheckbox, FallbackValue=Edit}" HorizontalAlignment="Left" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Checked="chkEdit_Checked" Unchecked="chkEdit_Unchecked"/>
+        <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteButtonVisibility, FallbackValue=Hidden}"/>
     </Grid>
 </Window>

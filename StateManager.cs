@@ -199,7 +199,7 @@ namespace SlickProcess
 
 				MessageBox.Show(message, "Step #" + (CurrentStep + 1) + " Failed");
 
-				Transition(FallBackStep());
+				Transition(fallBackStep);
 			}
 		}
 
@@ -212,22 +212,43 @@ namespace SlickProcess
 		{
 			if (isEditMode)
 			{
-				State.InstructionEdit = State.Instruction;
-
 				State.InstructionEditVisibility = "Visible";
 				State.InstructionVisibility = "Hidden";
+				State.DeleteButtonVisibility = "Visible";
 			}
 			else
 			{
 				State.InstructionVisibility = "Visible";
 				State.InstructionEditVisibility = "Hidden";
-
-				// Update the list of steps
-				Steps[CurrentStep].Instruction = State.Instruction;
-				Steps[CurrentStep].PicturePath = State.PicturePath;
+				State.DeleteButtonVisibility = "Hidden";
 
 				// Save changes immediately
 				Save(ProcessPath);
+			}
+		}
+
+		internal void UpdateSteps()
+		{
+			// Update the list of steps
+			Steps[CurrentStep].Instruction = State.Instruction;
+			Steps[CurrentStep].PicturePath = State.PicturePath;
+		}
+
+		internal void DeleteCurrentStep()
+		{
+			if (!Steps.Remove(Steps[CurrentStep]))
+			{
+				MessageBox.Show("Unable to delete step!");
+			}
+
+			// Transition to the next step (or the previous step if deleting the last step)
+			if (CurrentStep >= Steps.Count)
+			{
+				Transition(CurrentStep - 1);
+			}
+			else
+			{
+				Transition(CurrentStep);
 			}
 		}
 

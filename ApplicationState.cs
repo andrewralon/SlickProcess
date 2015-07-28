@@ -26,6 +26,8 @@ namespace SlickProcess
 
 		private string number;
 
+		private string deleteButtonVisibility;
+
 		private string backText;
 
 		private string nextText;
@@ -48,6 +50,7 @@ namespace SlickProcess
 				instruction = value;
 				instructionEdit = value;
 				NotifyPropertyChanged("Instruction");
+				NotifyPropertyChanged("InstructionEdit");
 			}
 		}
 
@@ -70,6 +73,8 @@ namespace SlickProcess
 				instruction = value;
 				NotifyPropertyChanged("InstructionEdit");
 				NotifyPropertyChanged("Instruction");
+
+				StateManager.Instance.UpdateSteps();
 			}
 		}
 
@@ -111,6 +116,16 @@ namespace SlickProcess
 			{
 				number = value;
 				NotifyPropertyChanged("Number");
+			}
+		}
+
+		public string DeleteButtonVisibility
+		{
+			get { return deleteButtonVisibility; }
+			set
+			{
+				deleteButtonVisibility = value;
+				NotifyPropertyChanged("DeleteButtonVisibility");
 			}
 		}
 
