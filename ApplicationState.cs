@@ -28,15 +28,23 @@ namespace SlickProcess
 
 		private string deleteButtonVisibility;
 
+		private string moveBackVisibility;
+
+		private bool moveBackEnabled;
+
+		private string moveNextVisibility;
+
+		private bool moveNextEnabled;
+
 		private string backText;
-
-		private string nextText;
-
-		private string cancelText;
 
 		private bool backEnabled;
 
+		private string nextText;
+
 		private bool nextEnabled;
+
+		private string cancelText;
 
 		#endregion Fields
 
@@ -129,6 +137,46 @@ namespace SlickProcess
 			}
 		}
 
+		public string MoveBackVisibility
+		{
+			get { return moveBackVisibility; }
+			set
+			{
+				moveBackVisibility = value;
+				NotifyPropertyChanged("MoveBackVisibility");
+			}
+		}
+
+		public bool MoveBackEnabled
+		{
+			get { return moveBackEnabled; }
+			set
+			{
+				moveBackEnabled = value;
+				NotifyPropertyChanged("MoveBackEnabled");
+			}
+		}
+
+		public string MoveNextVisibility
+		{
+			get { return moveNextVisibility; }
+			set
+			{
+				moveNextVisibility = value;
+				NotifyPropertyChanged("MoveNextVisibility");
+			}
+		}
+
+		public bool MoveNextEnabled
+		{
+			get { return moveNextEnabled; }
+			set
+			{
+				moveNextEnabled = value;
+				NotifyPropertyChanged("MoveNextEnabled");
+			}
+		}
+
 		public string BackText
 		{
 			get { return backText; }
@@ -136,26 +184,6 @@ namespace SlickProcess
 			{
 				backText = value;
 				NotifyPropertyChanged("BackText");
-			}
-		}
-
-		public string NextText
-		{
-			get { return nextText; }
-			set
-			{
-				nextText = value;
-				NotifyPropertyChanged("NextText");
-			}
-		}
-
-		public string CancelText
-		{
-			get { return cancelText; }
-			set
-			{
-				cancelText = value;
-				NotifyPropertyChanged("CancelText");
 			}
 		}
 
@@ -169,6 +197,16 @@ namespace SlickProcess
 			}
 		}
 
+		public string NextText
+		{
+			get { return nextText; }
+			set
+			{
+				nextText = value;
+				NotifyPropertyChanged("NextText");
+			}
+		}
+
 		public bool NextEnabled
 		{
 			get { return nextEnabled; }
@@ -176,6 +214,16 @@ namespace SlickProcess
 			{
 				nextEnabled = value;
 				NotifyPropertyChanged("NextEnabled");
+			}
+		}
+
+		public string CancelText
+		{
+			get { return cancelText; }
+			set
+			{
+				cancelText = value;
+				NotifyPropertyChanged("CancelText");
 			}
 		}
 

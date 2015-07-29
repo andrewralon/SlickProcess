@@ -69,7 +69,10 @@ namespace SlickProcess
 
 		private void btnCancel_Click(object sender, RoutedEventArgs e)
 		{
-			this.Close();
+			if (StateManager.Instance.Close())
+			{
+				this.Close();
+			}
 		}
 
 		private void chkEdit_Checked(object sender, RoutedEventArgs e)
@@ -93,6 +96,16 @@ namespace SlickProcess
 			{
 				// Handle the picture drop by adding it to the slide
 			}
+		}
+
+		private void btnMoveBack_Click(object sender, RoutedEventArgs e)
+		{
+			StateManager.Instance.MoveCurrentStepBack();
+		}
+
+		private void btnMoveNext_Click(object sender, RoutedEventArgs e)
+		{
+			StateManager.Instance.MoveCurrentStepNext();
 		}
 
 		private void Window_Drop(object sender, DragEventArgs e)

@@ -20,9 +20,9 @@ namespace SlickProcess
 
 		// Debug / proof of concept / testing variables
 		private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-		private string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\pics\\";
+		private string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\SlickProcess\\";
 		private string picPath = "\\..\\..\\Resources\\";
-		private string xmlPath = "steps.xml";
+		private string xmlPath = "process1.xml";
 		private string fullPath;
 
 		#endregion Fields
@@ -79,7 +79,7 @@ namespace SlickProcess
 				{
 					writer.WriteStartElement("Step");
 
-					writer.WriteElementString("Instruction", "Instruction for step " + (i + 1).ToString());
+					writer.WriteElementString("Instruction", "Copy picture from step " + (i + 1).ToString());
 					writer.WriteElementString("PicturePath", pics[i].ToString());
 					writer.WriteElementString("Command", "copy \"" + pics[i].ToString() + "\" \"" + desktop + "\"");
 
@@ -145,6 +145,20 @@ namespace SlickProcess
 
 		internal void Save(string filePath)
 		{
+			// TODO - Check if anything has changed w/ a "dirty" bool first!
+
+			MessageBoxResult result = MessageBox.Show("Would you like to save changes to your process?",
+				"Save your process?", MessageBoxButton.YesNo);
+			if (result != MessageBoxResult.Yes)
+			{
+				return;
+			}
+
+			if (filePath == "")
+			{
+				filePath = xmlPath;
+			}
+
 			// Create an XML file from the available pictures
 			XmlWriterSettings settings = new XmlWriterSettings();
 			settings.OmitXmlDeclaration = true;
@@ -208,6 +222,24 @@ namespace SlickProcess
 			Transition(CurrentStep - 1);
 		}
 
+		internal bool Close()
+		{
+			if (CurrentStep < Steps.Count - 1)
+			{
+				MessageBoxResult result = MessageBox.Show("Are you sure you want to close before finishing the current process?",
+						"Are you sure?", MessageBoxButton.YesNo);
+
+				if (result == MessageBoxResult.No)
+				{
+					return false;
+				}
+			}
+
+			StateManager.Instance.Save("");
+
+			return true;
+		}
+
 		internal void ToggleEditMode(bool isEditMode)
 		{
 			if (isEditMode)
@@ -215,15 +247,16 @@ namespace SlickProcess
 				State.InstructionEditVisibility = "Visible";
 				State.InstructionVisibility = "Hidden";
 				State.DeleteButtonVisibility = "Visible";
+				State.MoveBackVisibility = "Visible";
+				State.MoveNextVisibility = "Visible";
 			}
 			else
 			{
 				State.InstructionVisibility = "Visible";
 				State.InstructionEditVisibility = "Hidden";
 				State.DeleteButtonVisibility = "Hidden";
-
-				// Save changes immediately
-				Save(ProcessPath);
+				State.MoveBackVisibility = "Hidden";
+				State.MoveNextVisibility = "Hidden";
 			}
 		}
 
@@ -252,6 +285,39 @@ namespace SlickProcess
 			}
 		}
 
+		internal void MoveCurrentStepBack()
+		{
+			if (CurrentStep <= 0)
+			{
+				return;
+			}
+
+			Steps.Insert(CurrentStep - 1, Steps[CurrentStep]);
+			Steps.RemoveAt(CurrentStep + 1);
+
+			Transition(CurrentStep - 1);
+		}
+
+		internal void MoveCurrentStepNext()
+		{
+			if (CurrentStep + 2 > Steps.Count)
+			{
+				return;
+			}
+			else if (CurrentStep + 2 == Steps.Count)
+			{
+				Steps.Add(Steps[CurrentStep]);
+			}
+			else
+			{
+				Steps.Insert(CurrentStep + 2, Steps[CurrentStep]);
+			}
+
+			Steps.RemoveAt(CurrentStep);
+
+			Transition(CurrentStep + 1);
+		}
+
 		#endregion Public Methods
 
 		#region Private Methods
@@ -273,14 +339,15 @@ namespace SlickProcess
 
 			// Update the buttons for first and last steps
 			State.BackEnabled = CurrentStep <= 0 ? false : true;
+			State.MoveBackEnabled = State.BackEnabled;
 			State.NextEnabled = CurrentStep >= Steps.Count - 1 ? false : true;
+			State.MoveNextEnabled = State.NextEnabled;
 			State.CancelText = CurrentStep >= Steps.Count - 1 ? "Finish" : "Cancel";
 		}
 
 		private bool ExecuteStep()
 		{
 			return RunCommand(Steps[CurrentStep].Command);
-			//return Steps[CurrentStep].Method();
 		}
 
 		private int FallBackStep()
