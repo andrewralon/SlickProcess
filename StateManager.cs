@@ -107,10 +107,15 @@ namespace SlickProcess
 		internal void Open(string filePath)
 		{
 			string filename = Path.GetFileName(filePath);
+			string extension = Path.GetExtension(filePath);
 			if (ProcessName == "")
 			{
 				ProcessName = filename;
 				ProcessPath = filePath;
+			}
+			else if (extension != ".xml") // TODO - Check if the file is a valid process
+			{
+				return;
 			}
 			else
 			{
@@ -316,6 +321,16 @@ namespace SlickProcess
 			Steps.RemoveAt(CurrentStep);
 
 			Transition(CurrentStep + 1);
+		}
+
+		internal void InsertPicture(string picturePath)
+		{
+			string extension = System.IO.Path.GetExtension(picturePath);
+			if (extension == ".jpg" || extension == ".png" || extension == ".bmp")
+			{
+				Steps[CurrentStep].PicturePath = picturePath;
+				Transition(CurrentStep);
+			}
 		}
 
 		#endregion Public Methods

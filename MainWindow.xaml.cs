@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,7 +95,17 @@ namespace SlickProcess
 		{
 			if ((bool)chkEdit.IsChecked)
 			{
-				// Handle the picture drop by adding it to the slide
+				if (e.Data.GetDataPresent(DataFormats.FileDrop))
+				{
+					// Get the paths of all files dragged in
+					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+					// Insert the first picture
+					StateManager.Instance.InsertPicture(files[0]);
+
+					// Reset the data context for the window
+					DataContext = StateManager.Instance.State;
+				}
 			}
 		}
 
@@ -115,7 +126,7 @@ namespace SlickProcess
 				// Get the paths of all files dragged in
 				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
-				// Get the first file and open it
+				// Open the first file
 				StateManager.Instance.Open(files[0]);
 
 				// Reset the data context for the window
