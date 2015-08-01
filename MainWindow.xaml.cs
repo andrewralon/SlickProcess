@@ -27,7 +27,7 @@ namespace SlickProcess
 		public MainWindow()
 		{
 			InitializeComponent();
-			this.Title += " " + Application.ResourceAssembly.GetName().Version + 
+			this.Title += " " + Application.ResourceAssembly.GetName().Version +
 				" © " + DateTime.UtcNow.Year + " TeamRalon";
 			this.Tag = this.Title;
 
@@ -38,6 +38,7 @@ namespace SlickProcess
 				Console.WriteLine("Argument #" + (i + 1) + ":  " + args[i]);
 			}
 
+			// If an argument is passed in, open it!
 			if (args.Length > 1 && args[1] != "")
 			{
 				StateManager.Instance.Open(args[1]);
@@ -57,6 +58,8 @@ namespace SlickProcess
 		#endregion Public Methods
 
 		#region Private Methods
+
+		#region Buttons
 
 		private void btnBack_Click(object sender, RoutedEventArgs e)
 		{
@@ -85,30 +88,11 @@ namespace SlickProcess
 		{
 			StateManager.Instance.ToggleEditMode((bool)chkEdit.IsChecked);
 		}
-		
+
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
 			StateManager.Instance.DeleteCurrentStep();
 		}
-
-		private void picPicture_Drop(object sender, DragEventArgs e)
-		{
-			if ((bool)chkEdit.IsChecked)
-			{
-				if (e.Data.GetDataPresent(DataFormats.FileDrop))
-				{
-					// Get the paths of all files dragged in
-					string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-					// Insert the first picture
-					StateManager.Instance.InsertPicture(files[0]);
-
-					// Reset the data context for the window
-					DataContext = StateManager.Instance.State;
-				}
-			}
-		}
-
 		private void btnMoveBack_Click(object sender, RoutedEventArgs e)
 		{
 			StateManager.Instance.MoveCurrentStepBack();
@@ -117,6 +101,25 @@ namespace SlickProcess
 		private void btnMoveNext_Click(object sender, RoutedEventArgs e)
 		{
 			StateManager.Instance.MoveCurrentStepNext();
+		}
+
+		#endregion Buttons
+
+		#region Handlers
+
+		private void picPicture_Drop(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				// Get the paths of all files dragged in
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+				// Insert the first picture
+				StateManager.Instance.InsertPicture(files[0]);
+
+				// Reset the data context for the window
+				DataContext = StateManager.Instance.State;
+			}
 		}
 
 		private void Window_Drop(object sender, DragEventArgs e)
@@ -133,6 +136,28 @@ namespace SlickProcess
 				DataContext = StateManager.Instance.State;
 			}
 		}
+
+		private void Window_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Left && Keyboard.Modifiers == ModifierKeys.None)
+			{
+				StateManager.Instance.Back();
+			}
+			else if (e.Key == Key.Right && Keyboard.Modifiers == ModifierKeys.None)
+			{
+				StateManager.Instance.Next();
+			}
+			else if (e.Key == Key.Left && Keyboard.Modifiers == ModifierKeys.Control)
+			{
+				StateManager.Instance.MoveCurrentStepBack();
+			}
+			else if (e.Key == Key.Right && Keyboard.Modifiers == ModifierKeys.Control)
+			{
+				StateManager.Instance.MoveCurrentStepNext();
+			}
+		}
+
+		#endregion Handlers
 
 		#endregion Private Methods
 	}

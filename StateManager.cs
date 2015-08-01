@@ -17,6 +17,7 @@ namespace SlickProcess
 		#region Fields
 
 		private static StateManager instance = new StateManager();
+		private bool editMode = false;
 
 		// Debug / proof of concept / testing variables
 		private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
@@ -245,9 +246,11 @@ namespace SlickProcess
 			return true;
 		}
 
-		internal void ToggleEditMode(bool isEditMode)
+		internal void ToggleEditMode(bool setEditMode)
 		{
-			if (isEditMode)
+			editMode = setEditMode;
+
+			if (editMode)
 			{
 				State.InstructionEditVisibility = "Visible";
 				State.InstructionVisibility = "Hidden";
@@ -292,44 +295,51 @@ namespace SlickProcess
 
 		internal void MoveCurrentStepBack()
 		{
-			if (CurrentStep <= 0)
+			if (editMode)
 			{
-				return;
+				if (CurrentStep <= 0)
+				{
+					return;
+				}
+
+				Steps.Insert(CurrentStep - 1, Steps[CurrentStep]);
+				Steps.RemoveAt(CurrentStep + 1);
+				Transition(CurrentStep - 1);
 			}
-
-			Steps.Insert(CurrentStep - 1, Steps[CurrentStep]);
-			Steps.RemoveAt(CurrentStep + 1);
-
-			Transition(CurrentStep - 1);
 		}
 
 		internal void MoveCurrentStepNext()
 		{
-			if (CurrentStep + 2 > Steps.Count)
+			if (editMode)
 			{
-				return;
-			}
-			else if (CurrentStep + 2 == Steps.Count)
-			{
-				Steps.Add(Steps[CurrentStep]);
-			}
-			else
-			{
-				Steps.Insert(CurrentStep + 2, Steps[CurrentStep]);
-			}
+				if (CurrentStep + 2 > Steps.Count)
+				{
+					return;
+				}
+				else if (CurrentStep + 2 == Steps.Count)
+				{
+					Steps.Add(Steps[CurrentStep]);
+				}
+				else
+				{
+					Steps.Insert(CurrentStep + 2, Steps[CurrentStep]);
+				}
 
-			Steps.RemoveAt(CurrentStep);
-
-			Transition(CurrentStep + 1);
+				Steps.RemoveAt(CurrentStep);
+				Transition(CurrentStep + 1);
+			}
 		}
 
 		internal void InsertPicture(string picturePath)
 		{
-			string extension = System.IO.Path.GetExtension(picturePath);
-			if (extension == ".jpg" || extension == ".png" || extension == ".bmp")
+			if (editMode)
 			{
-				Steps[CurrentStep].PicturePath = picturePath;
-				Transition(CurrentStep);
+				string extension = System.IO.Path.GetExtension(picturePath);
+				if (extension == ".jpg" || extension == ".png" || extension == ".bmp")
+				{
+					Steps[CurrentStep].PicturePath = picturePath;
+					Transition(CurrentStep);
+				}
 			}
 		}
 
@@ -362,7 +372,16 @@ namespace SlickProcess
 
 		private bool ExecuteStep()
 		{
-			return RunCommand(Steps[CurrentStep].Command);
+			// TODO - Should it return true if it didn't run?
+			// Do not run the command in edit mode
+			if (editMode)
+			{
+				return true;
+			}
+			else 
+			{
+				return RunCommand(Steps[CurrentStep].Command);
+			}
 		}
 
 		private int FallBackStep()
