@@ -27,9 +27,11 @@
         <Button x:Name="btnCancel" Content="{Binding CancelText, FallbackValue=Cancel}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnCancel_Click" FontSize="16"/>
 
         <CheckBox x:Name="chkEdit" Content="{Binding EditCheckbox, FallbackValue=Edit}" HorizontalAlignment="Left" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Checked="chkEdit_Checked" Unchecked="chkEdit_Unchecked"/>
-        <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteButtonVisibility, FallbackValue=Hidden}"/>
 
+        <!-- EDIT MODE CONTROLS -->
+        <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteButtonVisibility, FallbackValue=Hidden}"/>
         <Button x:Name="btnMoveBack" Content="&lt;&lt;" IsEnabled="{Binding MoveBackEnabled, FallbackValue=False}" Visibility="{Binding Path=MoveBackVisibility, FallbackValue=Hidden}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,10,108,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveBack_Click" FontSize="16"/>
         <Button x:Name="btnMoveNext" Content="&gt;&gt;" IsEnabled="{Binding MoveNextEnabled, FallbackValue=True}" Visibility="{Binding Path=MoveNextVisibility, FallbackValue=Hidden}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="108,10,0,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveNext_Click" FontSize="16"/>
+        <!--<TextBox x:Name="txtXButton" Text ="X" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="254,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Grid.Row="1" TextAlignment="Right" IsReadOnly="True" Visibility="{Binding Path=DeleteButtonVisibility, FallbackValue=Visible}"/>-->
     </Grid>
 </Window>

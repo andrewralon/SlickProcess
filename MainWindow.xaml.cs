@@ -141,18 +141,22 @@ namespace SlickProcess
 		{
 			if (e.Key == Key.Left && Keyboard.Modifiers == ModifierKeys.None)
 			{
+				e.Handled = true;
 				StateManager.Instance.Back();
 			}
 			else if (e.Key == Key.Right && Keyboard.Modifiers == ModifierKeys.None)
 			{
+				e.Handled = true;
 				StateManager.Instance.Next();
 			}
 			else if (e.Key == Key.Left && Keyboard.Modifiers == ModifierKeys.Control)
 			{
+				e.Handled = true;
 				StateManager.Instance.MoveCurrentStepBack();
 			}
 			else if (e.Key == Key.Right && Keyboard.Modifiers == ModifierKeys.Control)
 			{
+				e.Handled = true;
 				StateManager.Instance.MoveCurrentStepNext();
 			}
 		}

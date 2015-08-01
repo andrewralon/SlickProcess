@@ -249,6 +249,11 @@ namespace SlickProcess
 
 		private static BitmapImage Convert(string bitmapPath)
 		{
+			if (bitmapPath == "")
+			{
+				return null;
+			}
+
 			MemoryStream ms = new MemoryStream();
 			Bitmap bitmap = new Bitmap(bitmapPath);
 			bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
