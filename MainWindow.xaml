@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SlickProcess.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="SlickProcess" Height="675" Width="656" AllowDrop="True" Drop="Window_Drop" KeyDown="Window_KeyDown">
+        Title="SlickProcess" Height="675" Width="700" AllowDrop="True" Drop="Window_Drop" KeyDown="Window_KeyDown">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -29,9 +29,9 @@
         <CheckBox x:Name="chkEdit" Content="{Binding EditCheckbox, FallbackValue=Edit}" HorizontalAlignment="Left" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Checked="chkEdit_Checked" Unchecked="chkEdit_Unchecked"/>
 
         <!-- EDIT MODE CONTROLS -->
-        <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteButtonVisibility, FallbackValue=Hidden}"/>
+        <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="0,45,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteStepButtonVisibility, FallbackValue=Hidden}"/>
         <Button x:Name="btnMoveBack" Content="&lt;&lt;" IsEnabled="{Binding MoveBackEnabled, FallbackValue=False}" Visibility="{Binding Path=MoveBackVisibility, FallbackValue=Hidden}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,10,108,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveBack_Click" FontSize="16"/>
         <Button x:Name="btnMoveNext" Content="&gt;&gt;" IsEnabled="{Binding MoveNextEnabled, FallbackValue=True}" Visibility="{Binding Path=MoveNextVisibility, FallbackValue=Hidden}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="108,10,0,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveNext_Click" FontSize="16"/>
-        <!--<TextBox x:Name="txtXButton" Text ="X" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="254,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" Grid.Row="1" TextAlignment="Right" IsReadOnly="True" Visibility="{Binding Path=DeleteButtonVisibility, FallbackValue=Visible}"/>-->
+        <TextBlock x:Name="txtXButton" Text ="X" Grid.Row="1" Grid.Column="2" Visibility="{Binding Path=DeletePictureButtonVisibility, FallbackValue=Hidden}" TextWrapping="Wrap" Margin="0,25,25,0" TextAlignment="Center" MouseDown="txtXButton_MouseDown" FontSize="28" HorizontalAlignment="Right" Width="38" Height="38" VerticalAlignment="Top" Background="White"/>
     </Grid>
 </Window>

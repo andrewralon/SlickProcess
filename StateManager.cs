@@ -120,7 +120,7 @@ namespace SlickProcess
 			}
 			else
 			{
-				MessageBoxResult result = 
+				MessageBoxResult result =
 					MessageBox.Show("Would you like to open \"" + filename + "\"?", "Open a Process", MessageBoxButton.YesNo);
 				if (result != MessageBoxResult.Yes)
 				{
@@ -193,8 +193,18 @@ namespace SlickProcess
 			}
 		}
 
+		internal void Back()
+		{
+			Transition(CurrentStep - 1);
+		}
+
 		internal void Next()
 		{
+			if (CurrentStep == Steps.Count - 1)
+			{
+				return;
+			}
+
 			// Run the step's method and store the result
 			Steps[CurrentStep].Passed = ExecuteStep();
 
@@ -223,11 +233,6 @@ namespace SlickProcess
 			}
 		}
 
-		internal void Back()
-		{
-			Transition(CurrentStep - 1);
-		}
-
 		internal bool Close()
 		{
 			if (CurrentStep < Steps.Count - 1)
@@ -254,7 +259,8 @@ namespace SlickProcess
 			{
 				State.InstructionEditVisibility = "Visible";
 				State.InstructionVisibility = "Hidden";
-				State.DeleteButtonVisibility = "Visible";
+				State.DeleteStepButtonVisibility = "Visible";
+				State.DeletePictureButtonVisibility = "Visible";
 				State.MoveBackVisibility = "Visible";
 				State.MoveNextVisibility = "Visible";
 			}
@@ -262,7 +268,8 @@ namespace SlickProcess
 			{
 				State.InstructionVisibility = "Visible";
 				State.InstructionEditVisibility = "Hidden";
-				State.DeleteButtonVisibility = "Hidden";
+				State.DeleteStepButtonVisibility = "Hidden";
+				State.DeletePictureButtonVisibility = "Hidden";
 				State.MoveBackVisibility = "Hidden";
 				State.MoveNextVisibility = "Hidden";
 			}
@@ -275,25 +282,37 @@ namespace SlickProcess
 			Steps[CurrentStep].PicturePath = State.PicturePath;
 		}
 
-		internal void DeleteCurrentStep()
+		internal void DeleteStep()
 		{
-			if (!Steps.Remove(Steps[CurrentStep]))
+			if (editMode)
 			{
-				MessageBox.Show("Unable to delete step!");
-			}
+				if (!Steps.Remove(Steps[CurrentStep]))
+				{
+					MessageBox.Show("Unable to delete step!");
+				}
 
-			// Transition to the next step (or the previous step if deleting the last step)
-			if (CurrentStep >= Steps.Count)
-			{
-				Transition(CurrentStep - 1);
-			}
-			else
-			{
-				Transition(CurrentStep);
+				// Transition to the next step (or the previous step if deleting the last step)
+				if (CurrentStep >= Steps.Count)
+				{
+					Transition(CurrentStep - 1);
+				}
+				else
+				{
+					Transition(CurrentStep);
+				}
 			}
 		}
 
-		internal void MoveCurrentStepBack()
+		internal void DeletePicture()
+		{
+			if (editMode)
+			{
+				State.PicturePath = "";
+				Steps[CurrentStep].PicturePath = "";
+			}
+		}
+
+		internal void MoveStepBack()
 		{
 			if (editMode)
 			{
@@ -308,7 +327,7 @@ namespace SlickProcess
 			}
 		}
 
-		internal void MoveCurrentStepNext()
+		internal void MoveStepNext()
 		{
 			if (editMode)
 			{
@@ -349,9 +368,8 @@ namespace SlickProcess
 
 		private void Transition(int nextStep)
 		{
-			if (nextStep < 0 || nextStep > Steps.Count)
+			if (nextStep < 0 || nextStep >= Steps.Count)
 			{
-				MessageBox.Show("There is no step number " + nextStep + "!", "Error Loading Step");
 				return;
 			}
 
@@ -378,7 +396,7 @@ namespace SlickProcess
 			{
 				return true;
 			}
-			else 
+			else
 			{
 				return RunCommand(Steps[CurrentStep].Command);
 			}

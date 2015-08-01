@@ -26,7 +26,9 @@ namespace SlickProcess
 
 		private string number;
 
-		private string deleteButtonVisibility;
+		private string deleteStepButtonVisibility;
+
+		private string deletePictureButtonVisibility;
 
 		private string moveBackVisibility;
 
@@ -127,13 +129,23 @@ namespace SlickProcess
 			}
 		}
 
-		public string DeleteButtonVisibility
+		public string DeleteStepButtonVisibility
 		{
-			get { return deleteButtonVisibility; }
+			get { return deleteStepButtonVisibility; }
 			set
 			{
-				deleteButtonVisibility = value;
-				NotifyPropertyChanged("DeleteButtonVisibility");
+				deleteStepButtonVisibility = value;
+				NotifyPropertyChanged("DeleteStepButtonVisibility");
+			}
+		}
+
+		public string DeletePictureButtonVisibility
+		{
+			get { return deletePictureButtonVisibility; }
+			set
+			{
+				deletePictureButtonVisibility = value;
+				NotifyPropertyChanged("DeletePictureButtonVisibility");
 			}
 		}
 

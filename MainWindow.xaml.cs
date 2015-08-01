@@ -91,16 +91,17 @@ namespace SlickProcess
 
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
-			StateManager.Instance.DeleteCurrentStep();
+			StateManager.Instance.DeleteStep();
 		}
+
 		private void btnMoveBack_Click(object sender, RoutedEventArgs e)
 		{
-			StateManager.Instance.MoveCurrentStepBack();
+			StateManager.Instance.MoveStepBack();
 		}
 
 		private void btnMoveNext_Click(object sender, RoutedEventArgs e)
 		{
-			StateManager.Instance.MoveCurrentStepNext();
+			StateManager.Instance.MoveStepNext();
 		}
 
 		#endregion Buttons
@@ -139,12 +140,12 @@ namespace SlickProcess
 
 		private void Window_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Left && Keyboard.Modifiers == ModifierKeys.None)
+			if (e.Key == Key.Left && Keyboard.Modifiers != ModifierKeys.Control)
 			{
 				e.Handled = true;
 				StateManager.Instance.Back();
 			}
-			else if (e.Key == Key.Right && Keyboard.Modifiers == ModifierKeys.None)
+			else if (e.Key == Key.Right && Keyboard.Modifiers != ModifierKeys.Control)
 			{
 				e.Handled = true;
 				StateManager.Instance.Next();
@@ -152,13 +153,29 @@ namespace SlickProcess
 			else if (e.Key == Key.Left && Keyboard.Modifiers == ModifierKeys.Control)
 			{
 				e.Handled = true;
-				StateManager.Instance.MoveCurrentStepBack();
+				StateManager.Instance.MoveStepBack();
 			}
 			else if (e.Key == Key.Right && Keyboard.Modifiers == ModifierKeys.Control)
 			{
 				e.Handled = true;
-				StateManager.Instance.MoveCurrentStepNext();
+				StateManager.Instance.MoveStepNext();
 			}
+			else if (e.Key == Key.Delete)
+			{
+				e.Handled = true;
+				StateManager.Instance.DeleteStep();
+			}
+			else if (e.Key == Key.F2)
+			{
+				e.Handled = true;
+				chkEdit.IsChecked = !(bool)chkEdit.IsChecked;
+			}
+		}
+
+		private void txtXButton_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			e.Handled = true;
+			StateManager.Instance.DeletePicture();
 		}
 
 		#endregion Handlers
