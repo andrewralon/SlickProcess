@@ -202,11 +202,27 @@ namespace SlickProcess
 		{
 			if (CurrentStep == Steps.Count - 1)
 			{
+				if (editMode)
+				{
+					Steps[CurrentStep].Passed = false;
+					NewStep();
+					Transition(CurrentStep + 1);
+				}
+
 				return;
 			}
 
-			// Run the step's method and store the result
-			Steps[CurrentStep].Passed = ExecuteStep();
+			if (editMode)
+			{
+				Steps[CurrentStep].Passed = false;
+				Transition(CurrentStep + 1);
+				return;
+			}
+			else
+			{
+				// Run the step's method and store the result
+				Steps[CurrentStep].Passed = ExecuteStep();
+			}
 
 			// What's the next step? If it passed, add 1. If it failed, display a message and go to the FallBackStep.
 			if (Steps[CurrentStep].Passed)
@@ -251,12 +267,19 @@ namespace SlickProcess
 			return true;
 		}
 
+		internal void NewStep()
+		{
+			Steps.Add(new Step(""));
+		}
+
 		internal void ToggleEditMode(bool setEditMode)
 		{
 			editMode = setEditMode;
 
 			if (editMode)
 			{
+				State.NextEnabled = true;
+
 				State.InstructionEditVisibility = "Visible";
 				State.InstructionVisibility = "Hidden";
 				State.DeleteStepButtonVisibility = "Visible";
@@ -266,6 +289,11 @@ namespace SlickProcess
 			}
 			else
 			{
+				if (CurrentStep >= Steps.Count - 1)
+				{
+					State.NextEnabled = false;
+				}
+
 				State.InstructionVisibility = "Visible";
 				State.InstructionEditVisibility = "Hidden";
 				State.DeleteStepButtonVisibility = "Hidden";
@@ -386,6 +414,11 @@ namespace SlickProcess
 			State.NextEnabled = CurrentStep >= Steps.Count - 1 ? false : true;
 			State.MoveNextEnabled = State.NextEnabled;
 			State.CancelText = CurrentStep >= Steps.Count - 1 ? "Finish" : "Cancel";
+
+			if (editMode)
+			{
+				State.NextEnabled = true;
+			}
 		}
 
 		private bool ExecuteStep()
