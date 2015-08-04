@@ -1,7 +1,13 @@
 ﻿<Window x:Class="SlickProcess.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:SlickProcess"
         Title="SlickProcess" Height="675" Width="700" AllowDrop="True" Drop="Window_Drop" KeyDown="Window_KeyDown">
+    
+    <!--<Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Control"/> --><!--Command="local:mnuNext_Click"/>--><!--
+    </Window.InputBindings>-->
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -14,6 +20,23 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
+
+        <!--<DockPanel Grid.ColumnSpan="4" VerticalAlignment="Top">
+            <Menu HorizontalAlignment="Left" DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" Click="mnuNew_Click" InputGestureText="Ctrl+N"/>
+                    <MenuItem Header="_Open" Click="mnuOpen_Click" InputGestureText="Ctrl+O"/>
+                    <MenuItem Header="E_xit" Click="mnuExit_Click" InputGestureText="Alt+F4"/>
+                </MenuItem>
+                <MenuItem Header="_Edit">
+                    <MenuItem Header="Edit Mode" Click="mnuEditMode_Click" InputGestureText="F2"/>
+                    <MenuItem Header="Back Step" Click="mnuBack_Click" InputGestureText="Left"/>
+                    <MenuItem Header="Next Step" Click="mnuNext_Click" InputGestureText="Right"/>
+                    <MenuItem Command="ApplicationCommands.Copy"/>
+                    <MenuItem Command="ApplicationCommands.Paste"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>-->
 
         <TextBlock x:Name="txtInstruction" Text="{Binding Instruction, FallbackValue='Put the thing in the thing.'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionVisibility, FallbackValue=Visible}"/>
         <TextBox x:Name="txtInstructionEdit" Text="{Binding InstructionEdit, FallbackValue='THE EDIT TEXTBOX!'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionEditVisibility, FallbackValue=Hidden}"/>

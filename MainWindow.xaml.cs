@@ -180,6 +180,33 @@ namespace SlickProcess
 
 		#endregion Handlers
 
+		#region Menu
+
+		//private void mnuNew_Click(object sender, RoutedEventArgs e)
+		//{
+		//	StateManager.Instance.NewStep();
+		//}
+
+		//private void mnuOpen_Click(object sender, RoutedEventArgs e)
+		//{
+		//	StateManager.Instance.Open();
+		//}
+
+		//private void mnuExit_Click(object sender, RoutedEventArgs e)
+		//{
+		//	if (StateManager.Instance.Close())
+		//	{
+		//		this.Close();
+		//	}
+		//}
+
+		//private void mnuEditMode_Click(object sender, RoutedEventArgs e)
+		//{
+		//	StateManager.Instance.ToggleEditMode();
+		//}
+
+		#endregion Menu
+
 		#endregion Private Methods
 	}
 }

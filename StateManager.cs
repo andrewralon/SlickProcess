@@ -319,6 +319,11 @@ namespace SlickProcess
 					MessageBox.Show("Unable to delete step!");
 				}
 
+				if (Steps.Count == 0)
+				{
+					NewStep();
+				}
+
 				// Transition to the next step (or the previous step if deleting the last step)
 				if (CurrentStep >= Steps.Count)
 				{
