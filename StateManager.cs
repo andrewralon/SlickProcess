@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Xml;
 using System.Xml.Linq;
+using Microsoft.Win32;
 
 namespace SlickProcess
 {
@@ -162,7 +163,14 @@ namespace SlickProcess
 
 			if (filePath == "")
 			{
-				filePath = xmlPath;
+				SaveFileDialog sfd = new SaveFileDialog();
+				sfd.InitialDirectory = desktop; // TODO - Make this a better location like My Documents
+				sfd.Filter = "XML Files | *.xml";
+				sfd.DefaultExt = "xml";
+				sfd.ShowDialog();
+
+				filePath = sfd.FileName;
+				//filePath = xmlPath;
 			}
 
 			// Create an XML file from the available pictures
@@ -262,7 +270,7 @@ namespace SlickProcess
 				}
 			}
 
-			StateManager.Instance.Save("");
+			Save("");
 
 			return true;
 		}
