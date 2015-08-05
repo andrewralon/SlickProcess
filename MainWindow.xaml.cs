@@ -89,6 +89,12 @@ namespace SlickProcess
 			StateManager.Instance.ToggleEditMode((bool)chkEdit.IsChecked);
 		}
 
+		private void btnNew_Click(object sender, RoutedEventArgs e)
+		{
+			StateManager.Instance.NewProcess();
+			chkEdit.IsChecked = true;
+		}
+
 		private void btnDelete_Click(object sender, RoutedEventArgs e)
 		{
 			StateManager.Instance.DeleteStep();
@@ -102,6 +108,12 @@ namespace SlickProcess
 		private void btnMoveNext_Click(object sender, RoutedEventArgs e)
 		{
 			StateManager.Instance.MoveStepNext();
+		}
+
+		private void txtDeletePicture_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			e.Handled = true;
+			StateManager.Instance.DeletePicture();
 		}
 
 		#endregion Buttons
@@ -170,12 +182,6 @@ namespace SlickProcess
 				e.Handled = true;
 				chkEdit.IsChecked = !(bool)chkEdit.IsChecked;
 			}
-		}
-
-		private void txtXButton_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			e.Handled = true;
-			StateManager.Instance.DeletePicture();
 		}
 
 		#endregion Handlers

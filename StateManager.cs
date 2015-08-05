@@ -267,10 +267,6 @@ namespace SlickProcess
 			return true;
 		}
 
-		internal void NewStep()
-		{
-			Steps.Add(new Step(""));
-		}
 
 		internal void ToggleEditMode(bool setEditMode)
 		{
@@ -310,6 +306,18 @@ namespace SlickProcess
 			Steps[CurrentStep].PicturePath = State.PicturePath;
 		}
 
+		internal void NewProcess()
+		{
+			Steps = new List<Step>();
+			NewStep();
+			Transition(0);
+		}
+
+		internal void NewStep()
+		{
+			Steps.Add(new Step(""));
+		}
+
 		internal void DeleteStep()
 		{
 			if (editMode)
@@ -334,6 +342,12 @@ namespace SlickProcess
 					Transition(CurrentStep);
 				}
 			}
+		}
+
+		internal void DeleteAllSteps()
+		{
+			Steps.Clear();
+			NewStep();
 		}
 
 		internal void DeletePicture()
