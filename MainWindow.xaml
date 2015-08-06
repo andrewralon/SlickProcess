@@ -40,8 +40,8 @@
 
         <TextBlock x:Name="txtInstruction" Text="{Binding Instruction, FallbackValue='Put the thing in the thing.'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionVisibility, FallbackValue=Visible}"/>
 
-        <UserControl x:Name="picUserControl" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Drop="picUserControl_Drop">
-            <Image x:Name="picPicture" Source="{Binding Picture}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <UserControl x:Name="picUserControl" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Drop="picUserControl_Drop" Background="#FFC70000">
+            <Image x:Name="picPicture" Source="{Binding Picture}"/>
         </UserControl>
 
         <TextBlock x:Name="txtStepNumber" Text="{Binding Number, FallbackValue=Step X of Y}" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="16"/>
