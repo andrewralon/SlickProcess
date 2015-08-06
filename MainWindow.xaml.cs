@@ -55,6 +55,11 @@ namespace SlickProcess
 
 		#region Public Methods
 
+		public void SetTitle(string title)
+		{
+			this.Title = this.Tag.ToString() + "  |  " + title;
+		}
+
 		#endregion Public Methods
 
 		#region Private Methods
@@ -120,7 +125,7 @@ namespace SlickProcess
 
 		#region Handlers
 
-		private void picPicture_Drop(object sender, DragEventArgs e)
+		private void picUserControl_Drop(object sender, DragEventArgs e)
 		{
 			if (e.Data.GetDataPresent(DataFormats.FileDrop))
 			{
