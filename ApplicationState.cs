@@ -14,11 +14,11 @@ namespace SlickProcess
 
 		private string instruction;
 
-		private string instructionVisibility;
+        private WtfEnum instructionVisibility;
 
 		private string instructionEdit;
 
-		private string instructionEditVisibility;
+        private WtfEnum instructionEditVisibility;
 
 		private ImageSource picture;
 
@@ -26,15 +26,15 @@ namespace SlickProcess
 
 		private string number;
 
-		private string deleteStepButtonVisibility;
+        private WtfEnum deleteStepButtonVisibility;
 
-		private string deletePictureButtonVisibility;
+        private WtfEnum deletePictureButtonVisibility;
 
-		private string moveBackVisibility;
+        private WtfEnum moveBackVisibility;
 
 		private bool moveBackEnabled;
 
-		private string moveNextVisibility;
+        private WtfEnum moveNextVisibility;
 
 		private bool moveNextEnabled;
 
@@ -64,7 +64,7 @@ namespace SlickProcess
 			}
 		}
 
-		public string InstructionVisibility
+        public WtfEnum InstructionVisibility
 		{
 			get { return instructionVisibility; }
 			set
@@ -88,7 +88,7 @@ namespace SlickProcess
 			}
 		}
 
-		public string InstructionEditVisibility
+        public WtfEnum InstructionEditVisibility
 		{
 			get { return instructionEditVisibility; }
 			set
@@ -129,7 +129,7 @@ namespace SlickProcess
 			}
 		}
 
-		public string DeleteStepButtonVisibility
+		public WtfEnum DeleteStepButtonVisibility
 		{
 			get { return deleteStepButtonVisibility; }
 			set
@@ -139,7 +139,7 @@ namespace SlickProcess
 			}
 		}
 
-		public string DeletePictureButtonVisibility
+        public WtfEnum DeletePictureButtonVisibility
 		{
 			get { return deletePictureButtonVisibility; }
 			set
@@ -149,7 +149,7 @@ namespace SlickProcess
 			}
 		}
 
-		public string MoveBackVisibility
+        public WtfEnum MoveBackVisibility
 		{
 			get { return moveBackVisibility; }
 			set
@@ -169,7 +169,7 @@ namespace SlickProcess
 			}
 		}
 
-		public string MoveNextVisibility
+        public WtfEnum MoveNextVisibility
 		{
 			get { return moveNextVisibility; }
 			set

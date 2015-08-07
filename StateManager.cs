@@ -284,12 +284,12 @@ namespace SlickProcess
 			{
 				State.NextEnabled = true;
 
-				State.InstructionEditVisibility = "Visible";
-				State.InstructionVisibility = "Hidden";
-				State.DeleteStepButtonVisibility = "Visible";
-				State.DeletePictureButtonVisibility = "Visible";
-				State.MoveBackVisibility = "Visible";
-				State.MoveNextVisibility = "Visible";
+				State.InstructionEditVisibility = WtfEnum.Visible;
+				State.InstructionVisibility = WtfEnum.Hidden;
+				State.DeleteStepButtonVisibility = WtfEnum.Visible;
+				State.DeletePictureButtonVisibility = WtfEnum.Visible
+                State.MoveBackVisibility = WtfEnum.Visible;
+                State.MoveNextVisibility = WtfEnum.Visible;
 			}
 			else
 			{
@@ -298,12 +298,12 @@ namespace SlickProcess
 					State.NextEnabled = false;
 				}
 
-				State.InstructionVisibility = "Visible";
-				State.InstructionEditVisibility = "Hidden";
-				State.DeleteStepButtonVisibility = "Hidden";
-				State.DeletePictureButtonVisibility = "Hidden";
-				State.MoveBackVisibility = "Hidden";
-				State.MoveNextVisibility = "Hidden";
+                State.InstructionVisibility = WtfEnum.Visible;
+                State.InstructionEditVisibility = WtfEnum.Hidden;
+				State.DeleteStepButtonVisibility = WtfEnum.Hidden;
+				State.DeletePictureButtonVisibility = WtfEnum.Hidden;
+                State.MoveBackVisibility = WtfEnum.Hidden;
+                State.MoveNextVisibility = WtfEnum.Hidden;
 			}
 		}
 
