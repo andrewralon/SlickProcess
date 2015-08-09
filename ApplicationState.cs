@@ -14,11 +14,11 @@ namespace SlickProcess
 
 		private string instruction;
 
-        private WtfEnum instructionVisibility;
+        private WtfVisibility instructionVisibility;
 
 		private string instructionEdit;
 
-        private WtfEnum instructionEditVisibility;
+        private WtfVisibility instructionEditVisibility;
 
 		private ImageSource picture;
 
@@ -26,15 +26,15 @@ namespace SlickProcess
 
 		private string number;
 
-        private WtfEnum deleteStepButtonVisibility;
+        private WtfVisibility deleteStepButtonVisibility;
 
-        private WtfEnum deletePictureButtonVisibility;
+        private WtfVisibility deletePictureButtonVisibility;
 
-        private WtfEnum moveBackVisibility;
+        private WtfVisibility moveBackVisibility;
 
 		private bool moveBackEnabled;
 
-        private WtfEnum moveNextVisibility;
+        private WtfVisibility moveNextVisibility;
 
 		private bool moveNextEnabled;
 
@@ -64,7 +64,7 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfEnum InstructionVisibility
+        public WtfVisibility InstructionVisibility
 		{
 			get { return instructionVisibility; }
 			set
@@ -88,7 +88,7 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfEnum InstructionEditVisibility
+        public WtfVisibility InstructionEditVisibility
 		{
 			get { return instructionEditVisibility; }
 			set
@@ -129,7 +129,7 @@ namespace SlickProcess
 			}
 		}
 
-		public WtfEnum DeleteStepButtonVisibility
+		public WtfVisibility DeleteStepButtonVisibility
 		{
 			get { return deleteStepButtonVisibility; }
 			set
@@ -139,7 +139,7 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfEnum DeletePictureButtonVisibility
+        public WtfVisibility DeletePictureButtonVisibility
 		{
 			get { return deletePictureButtonVisibility; }
 			set
@@ -149,7 +149,7 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfEnum MoveBackVisibility
+        public WtfVisibility MoveBackVisibility
 		{
 			get { return moveBackVisibility; }
 			set
@@ -169,7 +169,7 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfEnum MoveNextVisibility
+        public WtfVisibility MoveNextVisibility
 		{
 			get { return moveNextVisibility; }
 			set

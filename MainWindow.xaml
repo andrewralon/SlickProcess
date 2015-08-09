@@ -43,7 +43,7 @@
 
         <TextBlock x:Name="txtInstruction" Text="{Binding Instruction, FallbackValue='Put the thing in the thing.'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionVisibility, FallbackValue=Visible}"/>
 
-        <UserControl x:Name="picUserControl" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Drop="picUserControl_Drop" Background="#FFC70000">
+        <UserControl x:Name="picUserControl" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Drop="picUserControl_Drop" Background="Transparent">
             <Image x:Name="picPicture" Source="{Binding Picture}"/>
         </UserControl>
 
@@ -53,14 +53,14 @@
         <Button x:Name="btnNext" Content="{Binding NextText, FallbackValue=Next}" IsEnabled="{Binding NextEnabled, FallbackValue=True}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnNext_Click" FontSize="16"/>
         <Button x:Name="btnCancel" Content="{Binding CancelText, FallbackValue=Cancel}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnCancel_Click" FontSize="16"/>
 
-        <CheckBox x:Name="chkEdit" Content="{Binding EditCheckbox, FallbackValue=Edit}" HorizontalAlignment="Left" Margin="0,5,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Checked="chkEdit_Checked" Unchecked="chkEdit_Unchecked"/>
+        <CheckBox x:Name="chkEdit" Content="{Binding EditCheckbox, FallbackValue=Edit}" HorizontalAlignment="Left" Margin="86,7,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Checked="chkEdit_Checked" Unchecked="chkEdit_Unchecked"/>
 
         <!-- EDIT MODE CONTROLS -->
         <TextBox x:Name="txtInstructionEdit" Text="{Binding InstructionEdit, FallbackValue='THE EDIT TEXTBOX!'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionEditVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" MinWidth="300" TextAlignment="Center"/>
         <TextBlock x:Name="txtDeletePicture" Text ="X" Grid.Row="1" Grid.Column="2" Visibility="{Binding Path=DeletePictureButtonVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" TextWrapping="Wrap" Margin="0,25,25,0" TextAlignment="Center" MouseDown="txtDeletePicture_MouseDown" FontSize="28" HorizontalAlignment="Right" Width="38" Height="38" VerticalAlignment="Top" Background="White"/>
-        <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="67,2,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteStepButtonVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}"/>
+        <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="0,47,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteStepButtonVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}"/>
         <Button x:Name="btnMoveBack" Content="&lt;&lt;" IsEnabled="{Binding MoveBackEnabled, FallbackValue=False}" Visibility="{Binding Path=MoveBackVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,10,108,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveBack_Click" FontSize="16"/>
         <Button x:Name="btnMoveNext" Content="&gt;&gt;" IsEnabled="{Binding MoveNextEnabled, FallbackValue=True}" Visibility="{Binding Path=MoveNextVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="108,10,0,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveNext_Click" FontSize="16"/>
-        <Button x:Name="btnNew" Content="New Process" HorizontalAlignment="Left" Margin="67,47,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnNew_Click" Visibility="{Binding Path=NewButtonVisibility, FallbackValue=Visible, Converter={StaticResource boolToVisibilityConverter}}"/>
+        <Button x:Name="btnNew" Content="New Process" HorizontalAlignment="Left" Margin="0,4,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnNew_Click" Visibility="{Binding Path=NewButtonVisibility, FallbackValue=Visible, Converter={StaticResource boolToVisibilityConverter}}"/>
     </Grid>
 </Window>

@@ -57,6 +57,7 @@
     <Compile Include="ApplicationState.cs" />
     <Compile Include="StateManager.cs" />
     <Compile Include="Step.cs" />
+    <Compile Include="WtfValueConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
