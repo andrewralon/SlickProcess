@@ -27,9 +27,6 @@ namespace SlickProcess
 		public MainWindow()
 		{
 			InitializeComponent();
-			this.Title += " " + Application.ResourceAssembly.GetName().Version +
-				" © " + DateTime.UtcNow.Year + " TeamRalon";
-			this.Tag = this.Title;
 
 			// Handle passed in arguments
 			string[] args = Environment.GetCommandLineArgs();
@@ -54,11 +51,6 @@ namespace SlickProcess
 		#endregion Constructors
 
 		#region Public Methods
-
-		public void SetTitle(string title)
-		{
-			this.Title = this.Tag.ToString() + "  |  " + title;
-		}
 
 		#endregion Public Methods
 

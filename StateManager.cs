@@ -53,6 +53,10 @@ namespace SlickProcess
 		private StateManager()
 		{
 			ProcessName = "";
+            State = new ApplicationState();
+            State.WindowTitle = "SlickProcess " + Application.ResourceAssembly.GetName().Version +
+                " © " + DateTime.UtcNow.Year + " TeamRalon";
+            State.WindowTag = State.WindowTitle;
 		}
 
 		#endregion Constructors
@@ -110,16 +114,12 @@ namespace SlickProcess
 		{
 			string filename = Path.GetFileName(filePath);
 			string extension = Path.GetExtension(filePath);
-			if (ProcessName == "")
-			{
-				ProcessName = filename;
-				ProcessPath = filePath;
-			}
-			else if (extension != ".xml") // TODO - Check if the file is a valid process
+
+			if (extension != ".xml") // TODO - Check if the file is a valid process
 			{
 				return;
 			}
-			else
+			else if (ProcessName != "") // Do not ask for permission if you are opening a process on startup
 			{
 				MessageBoxResult result =
 					MessageBox.Show("Would you like to open \"" + filename + "\"?", "Open a Process", MessageBoxButton.YesNo);
@@ -129,7 +129,11 @@ namespace SlickProcess
 				}
 			}
 
-			// Load the XML file
+            ProcessName = filename;
+            ProcessPath = filePath;
+
+			// Change the window title and load the XML file
+            State.WindowTitle = State.WindowTag + "  |  " + ProcessName;
 			XDocument xml = XDocument.Load(filePath);
 
 			// Create the list of steps from the parsed data
@@ -142,10 +146,9 @@ namespace SlickProcess
 					)).ToList();
 
 			// Set the defaults on the GUI
-			State = new ApplicationState();
 			State.BackText = "Back";
 			State.NextText = "Next";
-
+            
 			// Transition to the first state
 			Transition(0);
 		}
@@ -478,6 +481,11 @@ namespace SlickProcess
 
 		private bool RunCommand(string command)
 		{
+            if (command == "") // Assume true if there is no command to run
+            {
+                return true;
+            }
+
 			bool result = false;
 
 			Process process = new Process();

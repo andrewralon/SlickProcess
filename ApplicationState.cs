@@ -12,6 +12,10 @@ namespace SlickProcess
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
+        private string windowTitle;
+
+        private string windowTag;
+
 		private string instruction;
 
         private WtfVisibility instructionVisibility;
@@ -51,6 +55,26 @@ namespace SlickProcess
 		#endregion Fields
 
 		#region Properties
+
+        public string WindowTitle
+        {
+            get { return windowTitle; }
+            set
+            {
+                windowTitle = value;
+                NotifyPropertyChanged("WindowTitle");
+            }
+        }
+
+        public string WindowTag
+        {
+            get { return windowTag; }
+            set
+            {
+                windowTag = value;
+                NotifyPropertyChanged("WindowTag");
+            }
+        }
 
 		public string Instruction
 		{
