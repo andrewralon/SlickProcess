@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:SlickProcess"
-        Title="{Binding WindowTitle, FallbackValue='SlickProcess'}" Tag="{Binding WindowTag}" Height="675" Width="700" AllowDrop="True" Drop="Window_Drop" KeyDown="Window_KeyDown">
+        Title="{Binding WindowTitle, FallbackValue='SlickProcess'}" Tag="{Binding WindowTag}" Height="745" Width="700" AllowDrop="True" Drop="Window_Drop" KeyDown="Window_KeyDown">
 
     <!--<Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control" Command="local:mnuNext_Click"/>
@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -55,12 +56,16 @@
 
         <CheckBox x:Name="chkEdit" Content="{Binding EditCheckbox, FallbackValue=Edit}" HorizontalAlignment="Left" Margin="86,7,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Checked="chkEdit_Checked" Unchecked="chkEdit_Unchecked"/>
 
+        <TextBlock x:Name="txtCommand" Text="{Binding Command, FallbackValue='This is the command.'}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=CommandVisibility, FallbackValue=Visible}" TextAlignment="Center" Margin="0,10,0,10" MaxWidth="500"/>
+
         <!-- EDIT MODE CONTROLS -->
-        <TextBox x:Name="txtInstructionEdit" Text="{Binding InstructionEdit, FallbackValue='THE EDIT TEXTBOX!'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionEditVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" MinWidth="300" TextAlignment="Center"/>
+        <TextBox x:Name="txtInstructionEdit" Text="{Binding InstructionEdit, FallbackValue='THE INSTRUCTION EDIT TEXTBOX!'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionEditVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" MinWidth="300" TextAlignment="Center" Margin="186,32"/>
         <TextBlock x:Name="txtDeletePicture" Text ="X" Grid.Row="1" Grid.Column="2" Visibility="{Binding Path=DeletePictureButtonVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" TextWrapping="Wrap" Margin="0,25,25,0" TextAlignment="Center" MouseDown="txtDeletePicture_MouseDown" FontSize="28" HorizontalAlignment="Right" Width="38" Height="38" VerticalAlignment="Top" Background="White"/>
         <Button x:Name="btnDelete" Content="Delete Step" HorizontalAlignment="Left" Margin="0,47,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteStepButtonVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}"/>
         <Button x:Name="btnMoveBack" Content="&lt;&lt;" IsEnabled="{Binding MoveBackEnabled, FallbackValue=False}" Visibility="{Binding Path=MoveBackVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,10,108,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveBack_Click" FontSize="16"/>
         <Button x:Name="btnMoveNext" Content="&gt;&gt;" IsEnabled="{Binding MoveNextEnabled, FallbackValue=True}" Visibility="{Binding Path=MoveNextVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="108,10,0,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveNext_Click" FontSize="16"/>
         <Button x:Name="btnNew" Content="New Process" HorizontalAlignment="Left" Margin="0,4,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnNew_Click" Visibility="{Binding Path=NewButtonVisibility, FallbackValue=Visible, Converter={StaticResource boolToVisibilityConverter}}"/>
+        <TextBlock x:Name="txtCommandLabel" Text ="Command: " Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" Margin="0,0,0,0" TextAlignment="Center" MouseDown="txtDeletePicture_MouseDown" FontSize="16" VerticalAlignment="Center" Background="White" HorizontalAlignment="Left"/>
+        <TextBox x:Name="txtCommandEdit" Text="{Binding CommandEdit, FallbackValue='THE COMMAND EDIT TEXTBOX!'}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=CommandEditVisibility, FallbackValue=Hidden, Converter={StaticResource boolToVisibilityConverter}}" MinWidth="300" TextAlignment="Center" Margin="0,10,0,10" Width="500"/>
     </Grid>
 </Window>

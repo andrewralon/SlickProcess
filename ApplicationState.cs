@@ -52,6 +52,14 @@ namespace SlickProcess
 
 		private string cancelText;
 
+		private string command;
+
+		private WtfVisibility commandVisibility;
+
+		private string commandEdit;
+
+		private WtfVisibility commandEditVisibility;
+
 		#endregion Fields
 
 		#region Properties
@@ -260,6 +268,52 @@ namespace SlickProcess
 			{
 				cancelText = value;
 				NotifyPropertyChanged("CancelText");
+			}
+		}
+
+		public string Command
+		{
+			get { return command; }
+			set 
+			{ 
+				command = value;
+				commandEdit = value;
+				NotifyPropertyChanged("Command");
+				NotifyPropertyChanged("CommandEdit");
+			}
+		}
+
+		public WtfVisibility CommandVisibility
+		{
+			get { return commandVisibility; }
+			set
+			{
+				commandVisibility = value;
+				NotifyPropertyChanged("CommandVisibility");
+			}
+		}
+
+		public string CommandEdit
+		{
+			get { return commandEdit; }
+			set
+			{
+				commandEdit = value;
+				command = value;
+				NotifyPropertyChanged("CommandEdit");
+				NotifyPropertyChanged("Command");
+
+				StateManager.Instance.UpdateSteps();
+			}
+		}
+
+		public WtfVisibility CommandEditVisibility
+		{
+			get { return commandEditVisibility; }
+			set
+			{
+				commandEditVisibility = value;
+				NotifyPropertyChanged("CommandEditVisibility");
 			}
 		}
 

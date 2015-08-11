@@ -53,8 +53,11 @@ namespace SlickProcess
 		private StateManager()
 		{
 			ProcessName = "";
+
+			AssemblyName assemblyName = Application.ResourceAssembly.GetName();
+
             State = new ApplicationState();
-            State.WindowTitle = "SlickProcess " + Application.ResourceAssembly.GetName().Version +
+            State.WindowTitle = assemblyName.Name + " " + assemblyName.Version +
                 " © " + DateTime.UtcNow.Year + " TeamRalon";
             State.WindowTag = State.WindowTitle;
 		}
@@ -289,6 +292,8 @@ namespace SlickProcess
 
 				State.InstructionEditVisibility = WtfVisibility.Visible;
 				State.InstructionVisibility = WtfVisibility.Hidden;
+				State.CommandEditVisibility = WtfVisibility.Visible;
+				State.CommandVisibility = WtfVisibility.Hidden;
 				State.DeleteStepButtonVisibility = WtfVisibility.Visible;
                 State.DeletePictureButtonVisibility = WtfVisibility.Visible;
                 State.MoveBackVisibility = WtfVisibility.Visible;
@@ -303,6 +308,8 @@ namespace SlickProcess
 
                 State.InstructionVisibility = WtfVisibility.Visible;
                 State.InstructionEditVisibility = WtfVisibility.Hidden;
+				State.CommandVisibility = WtfVisibility.Visible;
+				State.CommandEditVisibility = WtfVisibility.Hidden;
 				State.DeleteStepButtonVisibility = WtfVisibility.Hidden;
 				State.DeletePictureButtonVisibility = WtfVisibility.Hidden;
                 State.MoveBackVisibility = WtfVisibility.Hidden;
@@ -315,6 +322,7 @@ namespace SlickProcess
 			// Update the list of steps
 			Steps[CurrentStep].Instruction = State.Instruction;
 			Steps[CurrentStep].PicturePath = State.PicturePath;
+			Steps[CurrentStep].Command = State.Command;
 		}
 
 		internal void NewProcess()
@@ -437,6 +445,7 @@ namespace SlickProcess
 			State.Instruction = Steps[CurrentStep].Instruction;
 			State.Number = "Step " + (CurrentStep + 1) + " of " + Steps.Count;
 			State.PicturePath = Steps[CurrentStep].PicturePath;
+			State.Command = Steps[CurrentStep].Command;
 
 			// Update the buttons for first and last steps
 			State.BackEnabled = CurrentStep <= 0 ? false : true;
