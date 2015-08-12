@@ -32,7 +32,7 @@ namespace SlickProcess
 			string[] args = Environment.GetCommandLineArgs();
 			for (int i = 0; i < args.Length; i++)
 			{
-				Console.WriteLine("Argument #" + (i + 1) + ":  " + args[i]);
+				Console.WriteLine("Argument #" + i + ":  " + args[i]);
 			}
 
 			// If an argument is passed in, open it!

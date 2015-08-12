@@ -11,7 +11,7 @@ namespace SlickProcess
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ((WtfVisibility)value).ToString();
+			return Enum.Parse(targetType, value.ToString());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
