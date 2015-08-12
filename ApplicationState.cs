@@ -60,6 +60,8 @@ namespace SlickProcess
 
 		private WtfVisibility commandEditVisibility;
 
+		private bool editMode;
+
 		#endregion Fields
 
 		#region Properties
@@ -314,6 +316,16 @@ namespace SlickProcess
 			{
 				commandEditVisibility = value;
 				NotifyPropertyChanged("CommandEditVisibility");
+			}
+		}
+
+		public bool EditMode
+		{
+			get { return editMode; }
+			set
+			{
+				editMode = value;
+				NotifyPropertyChanged("EditMode");
 			}
 		}
 
