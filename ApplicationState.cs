@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -12,17 +13,17 @@ namespace SlickProcess
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-        private string windowTitle;
+		private string windowTitle;
 
-        private string windowTag;
+		private string windowTag;
 
 		private string instruction;
 
-        private WtfVisibility instructionVisibility;
+		//private Visibility instructionVisibility;
 
 		private string instructionEdit;
 
-        private WtfVisibility instructionEditVisibility;
+		//private Visibility instructionEditVisibility;
 
 		private ImageSource picture;
 
@@ -30,15 +31,15 @@ namespace SlickProcess
 
 		private string number;
 
-        private WtfVisibility deleteStepButtonVisibility;
+		//private Visibility deleteStepButtonVisibility;
 
-        private WtfVisibility deletePictureButtonVisibility;
+		//private Visibility deletePictureButtonVisibility;
 
-        private WtfVisibility moveBackVisibility;
+		//private Visibility moveBackVisibility;
 
 		private bool moveBackEnabled;
 
-        private WtfVisibility moveNextVisibility;
+		//private Visibility moveNextVisibility;
 
 		private bool moveNextEnabled;
 
@@ -54,11 +55,11 @@ namespace SlickProcess
 
 		private string command;
 
-		private WtfVisibility commandVisibility;
+		//private Visibility commandVisibility;
 
 		private string commandEdit;
 
-		private WtfVisibility commandEditVisibility;
+		//private Visibility commandEditVisibility;
 
 		private bool editMode;
 
@@ -66,25 +67,25 @@ namespace SlickProcess
 
 		#region Properties
 
-        public string WindowTitle
-        {
-            get { return windowTitle; }
-            set
-            {
-                windowTitle = value;
-                NotifyPropertyChanged("WindowTitle");
-            }
-        }
+		public string WindowTitle
+		{
+			get { return windowTitle; }
+			set
+			{
+				windowTitle = value;
+				NotifyPropertyChanged("WindowTitle");
+			}
+		}
 
-        public string WindowTag
-        {
-            get { return windowTag; }
-            set
-            {
-                windowTag = value;
-                NotifyPropertyChanged("WindowTag");
-            }
-        }
+		public string WindowTag
+		{
+			get { return windowTag; }
+			set
+			{
+				windowTag = value;
+				NotifyPropertyChanged("WindowTag");
+			}
+		}
 
 		public string Instruction
 		{
@@ -98,14 +99,9 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfVisibility InstructionVisibility
+		public Visibility InstructionVisibility
 		{
-			get { return instructionVisibility; }
-			set
-			{
-				instructionVisibility = value;
-				NotifyPropertyChanged("InstructionVisibility");
-			}
+			get { return EditMode ? Visibility.Hidden : Visibility.Visible; }
 		}
 
 		public string InstructionEdit
@@ -122,14 +118,9 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfVisibility InstructionEditVisibility
+		public Visibility InstructionEditVisibility
 		{
-			get { return instructionEditVisibility; }
-			set
-			{
-				instructionEditVisibility = value;
-				NotifyPropertyChanged("InstructionEditVisibility");
-			}
+			get { return EditMode ? Visibility.Visible : Visibility.Hidden; }
 		}
 
 		public string PicturePath
@@ -163,38 +154,24 @@ namespace SlickProcess
 			}
 		}
 
-		public WtfVisibility DeleteStepButtonVisibility
+		public Visibility DeleteStepButtonVisibility
 		{
-			get { return deleteStepButtonVisibility; }
-			set
-			{
-				deleteStepButtonVisibility = value;
-				NotifyPropertyChanged("DeleteStepButtonVisibility");
-			}
+			get { return EditMode ? Visibility.Visible : Visibility.Hidden; }
 		}
 
-        public WtfVisibility DeletePictureButtonVisibility
+		public Visibility DeletePictureButtonVisibility
 		{
-			get { return deletePictureButtonVisibility; }
-			set
-			{
-				deletePictureButtonVisibility = value;
-				NotifyPropertyChanged("DeletePictureButtonVisibility");
-			}
+			get { return EditMode ? Visibility.Visible : Visibility.Hidden; }
 		}
 
-        public WtfVisibility MoveBackVisibility
+		public Visibility MoveBackVisibility
 		{
-			get { return moveBackVisibility; }
-			set
-			{
-				moveBackVisibility = value;
-				NotifyPropertyChanged("MoveBackVisibility");
-			}
+			get { return EditMode ? Visibility.Visible : Visibility.Hidden; }
 		}
 
 		public bool MoveBackEnabled
 		{
+			//get { return EditMode ? true : false; }
 			get { return moveBackEnabled; }
 			set
 			{
@@ -203,18 +180,14 @@ namespace SlickProcess
 			}
 		}
 
-        public WtfVisibility MoveNextVisibility
+		public Visibility MoveNextVisibility
 		{
-			get { return moveNextVisibility; }
-			set
-			{
-				moveNextVisibility = value;
-				NotifyPropertyChanged("MoveNextVisibility");
-			}
+			get { return EditMode ? Visibility.Visible : Visibility.Hidden; }
 		}
 
 		public bool MoveNextEnabled
 		{
+			//get { return EditMode ? true : false; }
 			get { return moveNextEnabled; }
 			set
 			{
@@ -276,8 +249,8 @@ namespace SlickProcess
 		public string Command
 		{
 			get { return command; }
-			set 
-			{ 
+			set
+			{
 				command = value;
 				commandEdit = value;
 				NotifyPropertyChanged("Command");
@@ -285,14 +258,9 @@ namespace SlickProcess
 			}
 		}
 
-		public WtfVisibility CommandVisibility
+		public Visibility CommandVisibility
 		{
-			get { return commandVisibility; }
-			set
-			{
-				commandVisibility = value;
-				NotifyPropertyChanged("CommandVisibility");
-			}
+			get { return EditMode ? Visibility.Hidden : Visibility.Visible; }
 		}
 
 		public string CommandEdit
@@ -309,14 +277,9 @@ namespace SlickProcess
 			}
 		}
 
-		public WtfVisibility CommandEditVisibility
+		public Visibility CommandEditVisibility
 		{
-			get { return commandEditVisibility; }
-			set
-			{
-				commandEditVisibility = value;
-				NotifyPropertyChanged("CommandEditVisibility");
-			}
+			get { return EditMode ? Visibility.Visible : Visibility.Hidden; }
 		}
 
 		public bool EditMode
@@ -326,6 +289,16 @@ namespace SlickProcess
 			{
 				editMode = value;
 				NotifyPropertyChanged("EditMode");
+				NotifyPropertyChanged("InstructionVisibility");
+				NotifyPropertyChanged("InstructionEditVisibility");
+				NotifyPropertyChanged("CommandVisibility");
+				NotifyPropertyChanged("CommandEditVisibility");
+				NotifyPropertyChanged("DeletePictureButtonVisibility");
+				NotifyPropertyChanged("DeleteStepButtonVisibility");
+				NotifyPropertyChanged("MoveBackEnabled");
+				NotifyPropertyChanged("MoveBackVisibility");
+				NotifyPropertyChanged("MoveNextEnabled");
+				NotifyPropertyChanged("MoveNextVisibility");
 			}
 		}
 

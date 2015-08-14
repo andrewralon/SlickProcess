@@ -18,7 +18,7 @@ namespace SlickProcess
 		#region Fields
 
 		private static StateManager instance = new StateManager();
-		private bool editMode = false;
+		//private bool editMode = false;
 
 		// Debug / proof of concept / testing variables
 		private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
@@ -216,7 +216,7 @@ namespace SlickProcess
 		{
 			if (CurrentStep == Steps.Count - 1)
 			{
-				if (editMode)
+				if (State.EditMode)
 				{
 					Steps[CurrentStep].Passed = false;
 					NewStep();
@@ -226,7 +226,7 @@ namespace SlickProcess
 				return;
 			}
 
-			if (editMode)
+			if (State.EditMode)
 			{
 				Steps[CurrentStep].Passed = false;
 				Transition(CurrentStep + 1);
@@ -282,22 +282,22 @@ namespace SlickProcess
 		}
 
 
-		internal void ToggleEditMode(bool setEditMode)
+		internal void ToggleEditMode()
 		{
-			editMode = setEditMode;
+			State.EditMode = !State.EditMode;
 
-			if (editMode)
+			if (State.EditMode)
 			{
 				State.NextEnabled = true;
 
-				State.InstructionEditVisibility = WtfVisibility.Visible;
-				State.InstructionVisibility = WtfVisibility.Hidden;
-				State.CommandEditVisibility = WtfVisibility.Visible;
-				State.CommandVisibility = WtfVisibility.Hidden;
-				State.DeleteStepButtonVisibility = WtfVisibility.Visible;
-                State.DeletePictureButtonVisibility = WtfVisibility.Visible;
-                State.MoveBackVisibility = WtfVisibility.Visible;
-                State.MoveNextVisibility = WtfVisibility.Visible;
+				//State.InstructionEditVisibility = Visibility.Visible;
+				//State.InstructionVisibility = Visibility.Hidden;
+				//State.CommandEditVisibility = Visibility.Visible;
+				//State.CommandVisibility = Visibility.Hidden;
+				//State.DeleteStepButtonVisibility = Visibility.Visible;
+                //State.DeletePictureButtonVisibility = Visibility.Visible;
+                //State.MoveBackVisibility = Visibility.Visible;
+                //State.MoveNextVisibility = Visibility.Visible;
 			}
 			else
 			{
@@ -306,14 +306,14 @@ namespace SlickProcess
 					State.NextEnabled = false;
 				}
 
-                State.InstructionVisibility = WtfVisibility.Visible;
-                State.InstructionEditVisibility = WtfVisibility.Hidden;
-				State.CommandVisibility = WtfVisibility.Visible;
-				State.CommandEditVisibility = WtfVisibility.Hidden;
-				State.DeleteStepButtonVisibility = WtfVisibility.Hidden;
-				State.DeletePictureButtonVisibility = WtfVisibility.Hidden;
-                State.MoveBackVisibility = WtfVisibility.Hidden;
-                State.MoveNextVisibility = WtfVisibility.Hidden;
+                //State.InstructionVisibility = Visibility.Visible;
+                //State.InstructionEditVisibility = Visibility.Hidden;
+				//State.CommandVisibility = Visibility.Visible;
+				//State.CommandEditVisibility = Visibility.Hidden;
+				//State.DeleteStepButtonVisibility = Visibility.Hidden;
+				//State.DeletePictureButtonVisibility = Visibility.Hidden;
+                //State.MoveBackVisibility = Visibility.Hidden;
+                //State.MoveNextVisibility = Visibility.Hidden;
 			}
 		}
 
@@ -330,6 +330,7 @@ namespace SlickProcess
 			Steps = new List<Step>();
 			NewStep();
 			Transition(0);
+			State.EditMode = true;
 		}
 
 		internal void NewStep()
@@ -339,7 +340,7 @@ namespace SlickProcess
 
 		internal void DeleteStep()
 		{
-			if (editMode)
+			if (State.EditMode)
 			{
 				if (!Steps.Remove(Steps[CurrentStep]))
 				{
@@ -371,7 +372,7 @@ namespace SlickProcess
 
 		internal void DeletePicture()
 		{
-			if (editMode)
+			if (State.EditMode)
 			{
 				State.PicturePath = "";
 				Steps[CurrentStep].PicturePath = "";
@@ -380,7 +381,7 @@ namespace SlickProcess
 
 		internal void MoveStepBack()
 		{
-			if (editMode)
+			if (State.EditMode)
 			{
 				if (CurrentStep <= 0)
 				{
@@ -395,7 +396,7 @@ namespace SlickProcess
 
 		internal void MoveStepNext()
 		{
-			if (editMode)
+			if (State.EditMode)
 			{
 				if (CurrentStep + 2 > Steps.Count)
 				{
@@ -417,7 +418,7 @@ namespace SlickProcess
 
 		internal void InsertPicture(string picturePath)
 		{
-			if (editMode)
+			if (State.EditMode)
 			{
 				string extension = System.IO.Path.GetExtension(picturePath);
 				if (extension == ".jpg" || extension == ".png" || extension == ".bmp")
@@ -454,7 +455,7 @@ namespace SlickProcess
 			State.MoveNextEnabled = State.NextEnabled;
 			State.CancelText = CurrentStep >= Steps.Count - 1 ? "Finish" : "Cancel";
 
-			if (editMode)
+			if (State.EditMode)
 			{
 				State.NextEnabled = true;
 			}
@@ -464,7 +465,7 @@ namespace SlickProcess
 		{
 			// TODO - Should it return true if it didn't run?
 			// Do not run the command in edit mode
-			if (editMode)
+			if (State.EditMode)
 			{
 				return true;
 			}
