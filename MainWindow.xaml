@@ -54,10 +54,10 @@
 
         <Button Content="{Binding BackText, FallbackValue=Back}" IsEnabled="{Binding BackEnabled, FallbackValue=False}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnBack_Click" FontSize="16" TabIndex="30"/>
         <Button Content="{Binding NextText, FallbackValue=Next}" IsEnabled="{Binding NextEnabled, FallbackValue=True}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnNext_Click" FontSize="16" TabIndex="40"/>
-        <Button Content="{Binding CancelText, FallbackValue=Cancel}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="3" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnCancel_Click" FontSize="16" TabIndex="100"/>
+        <Button Content="{Binding CancelText, FallbackValue=Cancel}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Margin="0,10" HorizontalContentAlignment="Center" Height="50" Width="100" Click="btnCancel_Click" FontSize="16" TabIndex="100"/>
 
         <TextBlock Text ="Command: " Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" Margin="0,0,0,0" TextAlignment="Center" MouseDown="txtDeletePicture_MouseDown" FontSize="16" VerticalAlignment="Center" Background="White" HorizontalAlignment="Left"/>
-        <TextBlock Text="{Binding Command, FallbackValue='This is the command.'}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=CommandVisibility, FallbackValue=Visible}" TextAlignment="Center" Margin="0,10,0,10" MaxWidth="500"/>
+        <TextBlock Text="{Binding Command, FallbackValue='This is the command.'}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=CommandVisibility}" Margin="91,0,0,0" Width="586" HorizontalAlignment="Left"/>
 
         <!-- EDIT MODE CONTROLS -->
         <TextBox Text="{Binding Path=InstructionEdit, FallbackValue='THE INSTRUCTION EDIT TEXTBOX!'}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=InstructionEditVisibility}" MinWidth="300" TextAlignment="Center" Margin="186,32" TabIndex="10"/>
@@ -65,6 +65,6 @@
         <Button Content="Delete Step" HorizontalAlignment="Left" Margin="0,47,0,0" Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Width="81" Click="btnDelete_Click" Visibility="{Binding Path=DeleteStepButtonVisibility}" TabIndex="90"/>
         <Button Content="&lt;&lt;" IsEnabled="{Binding MoveBackEnabled}" Visibility="{Binding Path=MoveBackVisibility}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" Margin="0,10,108,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveBack_Click" FontSize="16" TabIndex="20"/>
         <Button Content="&gt;&gt;" IsEnabled="{Binding MoveNextEnabled}" Visibility="{Binding Path=MoveNextVisibility}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Left" Margin="108,10,0,10" HorizontalContentAlignment="Center" Height="50" Width="46" Click="btnMoveNext_Click" FontSize="16" TabIndex="50"/>
-        <TextBox Text="{Binding CommandEdit, FallbackValue='THE COMMAND EDIT TEXTBOX!'}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=CommandEditVisibility}" MinWidth="300" TextAlignment="Center" Margin="0,10,0,10" Width="500" TabIndex="60"/>
+        <TextBox Text="{Binding CommandEdit, FallbackValue='THE COMMAND EDIT TEXTBOX!'}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" FontSize="16" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" Visibility="{Binding Path=CommandEditVisibility}" MinWidth="300" Margin="86,0,0,0" TabIndex="60" VerticalScrollBarVisibility="Auto" Height="70" VerticalContentAlignment="Center"/>
     </Grid>
 </Window>
