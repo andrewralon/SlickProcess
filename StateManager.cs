@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -56,10 +58,10 @@ namespace SlickProcess
 
 			AssemblyName assemblyName = Application.ResourceAssembly.GetName();
 
-            State = new ApplicationState();
-            State.WindowTitle = assemblyName.Name + " " + assemblyName.Version +
-                " © " + DateTime.UtcNow.Year + " TeamRalon";
-            State.WindowTag = State.WindowTitle;
+			State = new ApplicationState();
+			State.WindowTitle = assemblyName.Name + " " + assemblyName.Version +
+				" © " + DateTime.UtcNow.Year + " TeamRalon";
+			State.WindowTag = State.WindowTitle;
 		}
 
 		#endregion Constructors
@@ -132,11 +134,11 @@ namespace SlickProcess
 				}
 			}
 
-            ProcessName = filename;
-            ProcessPath = filePath;
+			ProcessName = filename;
+			ProcessPath = filePath;
 
 			// Change the window title and load the XML file
-            State.WindowTitle = State.WindowTag + "  |  " + ProcessName;
+			State.WindowTitle = State.WindowTag + "  |  " + ProcessName;
 			XDocument xml = XDocument.Load(filePath);
 
 			// Create the list of steps from the parsed data
@@ -145,13 +147,14 @@ namespace SlickProcess
 					 select new Step(
 						 c.Element("Instruction").Value,
 						 c.Element("PicturePath").Value,
+						 //c.Element("Image").bytes,
 						 c.Element("Command").Value
 					)).ToList();
 
 			// Set the defaults on the GUI
 			State.BackText = "Back";
 			State.NextText = "Next";
-            
+			
 			// Transition to the first state
 			Transition(0);
 		}
@@ -176,7 +179,6 @@ namespace SlickProcess
 				sfd.ShowDialog();
 
 				filePath = sfd.FileName;
-				//filePath = xmlPath;
 			}
 
 			// Create an XML file from the available pictures
@@ -194,11 +196,21 @@ namespace SlickProcess
 				for (int i = 0; i < Steps.Count; i++)
 				{
 					writer.WriteStartElement("Step");
-
 					writer.WriteElementString("Instruction", Steps[i].Instruction);
 					writer.WriteElementString("PicturePath", Steps[i].PicturePath);
-					writer.WriteElementString("Command", Steps[i].Command);
 
+					// Write the image
+					Bitmap bitmap = new Bitmap(Steps[i].PicturePath);
+					using (MemoryStream ms = new MemoryStream())
+					{
+						bitmap.Save(ms, ImageFormat.Bmp);
+						byte[] bitmapData = ms.ToArray();
+						writer.WriteStartElement("Image");
+						writer.WriteBase64(bitmapData, 0, bitmapData.Length);
+						writer.WriteEndElement();
+					}
+
+					writer.WriteElementString("Command", Steps[i].Command);
 					writer.WriteEndElement();
 				}
 
@@ -295,9 +307,9 @@ namespace SlickProcess
 				//State.CommandEditVisibility = Visibility.Visible;
 				//State.CommandVisibility = Visibility.Hidden;
 				//State.DeleteStepButtonVisibility = Visibility.Visible;
-                //State.DeletePictureButtonVisibility = Visibility.Visible;
-                //State.MoveBackVisibility = Visibility.Visible;
-                //State.MoveNextVisibility = Visibility.Visible;
+				//State.DeletePictureButtonVisibility = Visibility.Visible;
+				//State.MoveBackVisibility = Visibility.Visible;
+				//State.MoveNextVisibility = Visibility.Visible;
 			}
 			else
 			{
@@ -306,14 +318,14 @@ namespace SlickProcess
 					State.NextEnabled = false;
 				}
 
-                //State.InstructionVisibility = Visibility.Visible;
-                //State.InstructionEditVisibility = Visibility.Hidden;
+				//State.InstructionVisibility = Visibility.Visible;
+				//State.InstructionEditVisibility = Visibility.Hidden;
 				//State.CommandVisibility = Visibility.Visible;
 				//State.CommandEditVisibility = Visibility.Hidden;
 				//State.DeleteStepButtonVisibility = Visibility.Hidden;
 				//State.DeletePictureButtonVisibility = Visibility.Hidden;
-                //State.MoveBackVisibility = Visibility.Hidden;
-                //State.MoveNextVisibility = Visibility.Hidden;
+				//State.MoveBackVisibility = Visibility.Hidden;
+				//State.MoveNextVisibility = Visibility.Hidden;
 			}
 		}
 
@@ -433,6 +445,18 @@ namespace SlickProcess
 
 		#region Private Methods
 
+		private XElement ConvertImageToBytes(string picturePath)
+		{
+			// Save image to XML
+			Bitmap bmp = new Bitmap(picturePath);
+			TypeConverter converter = TypeDescriptor.GetConverter(typeof(Bitmap));
+			XElement img = new XElement("image", Convert.ToBase64String(
+				(byte[])converter.ConvertTo(bmp, typeof(byte[]))));
+			//element.Add(img);
+
+			return img;
+		}
+
 		private void Transition(int nextStep)
 		{
 			if (nextStep < 0 || nextStep >= Steps.Count)
@@ -491,10 +515,10 @@ namespace SlickProcess
 
 		private bool RunCommand(string command)
 		{
-            if (command == "") // Assume true if there is no command to run
-            {
-                return true;
-            }
+			if (command == "") // Assume true if there is no command to run
+			{
+				return true;
+			}
 
 			bool result = false;
 

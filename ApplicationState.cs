@@ -19,11 +19,7 @@ namespace SlickProcess
 
 		private string instruction;
 
-		//private Visibility instructionVisibility;
-
 		private string instructionEdit;
-
-		//private Visibility instructionEditVisibility;
 
 		private ImageSource picture;
 
@@ -31,15 +27,7 @@ namespace SlickProcess
 
 		private string number;
 
-		//private Visibility deleteStepButtonVisibility;
-
-		//private Visibility deletePictureButtonVisibility;
-
-		//private Visibility moveBackVisibility;
-
 		private bool moveBackEnabled;
-
-		//private Visibility moveNextVisibility;
 
 		private bool moveNextEnabled;
 
@@ -55,11 +43,7 @@ namespace SlickProcess
 
 		private string command;
 
-		//private Visibility commandVisibility;
-
 		private string commandEdit;
-
-		//private Visibility commandEditVisibility;
 
 		private bool editMode;
 
@@ -130,7 +114,6 @@ namespace SlickProcess
 			{
 				picturePath = value;
 				Picture = Convert(picturePath);
-				//NotifyPropertyChanged("PicturePath");
 			}
 		}
 

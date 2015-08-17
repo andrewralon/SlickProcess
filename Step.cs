@@ -1,4 +1,5 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace SlickProcess
 {
@@ -60,6 +61,20 @@ namespace SlickProcess
 			PicturePath = picturePath;
 			Command = command;
 		}
+
+		//// Saved image and Windows command
+		//public Step(
+		//	string instruction,
+		//	string picturePath,
+		//	byte[] picture,
+		//	string command)
+		//{
+		//	SetDefaults();
+		//	Instruction = instruction;
+		//	PicturePath = picturePath;
+		//	Picture = picture;
+		//	Command = command;
+		//}
 
 		// Method determines passing criteria
 		public Step(
